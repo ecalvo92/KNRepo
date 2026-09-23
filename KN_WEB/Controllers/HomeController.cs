@@ -16,7 +16,7 @@ namespace KN_WEB.Controllers
             {
                 CantidadCursos = 3,
                 NombreUniversidad = "Universidad Fidélitas",
-                MontoCancelar = 250000M
+                MontoCancelar = 350000M
             };
 
             var matriculaService = new MatriculaService();
