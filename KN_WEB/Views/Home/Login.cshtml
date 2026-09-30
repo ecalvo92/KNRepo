@@ -38,7 +38,7 @@
             </div>
 
             <div class="login-options">
-                <a href="@Url.Action("Index","Home")" class="forgot-password-link">Olvidó su contraseña?</a>
+                <a href="@Url.Action("ForgotPassword","Home")" class="forgot-password-link">Olvidó su contraseña?</a>
             </div>
 
             <button type="submit" class="btn-login" id="btn-submit">
@@ -50,7 +50,7 @@
         <div class="login-divider"></div>
 
         <p class="login-footer-text">
-            <a href="#" id="link-register">No tiene una cuenta?</a>
+            <a href="@Url.Action("Register","Home")" id="link-register">No tiene una cuenta?</a>
         </p>
 
     </div>

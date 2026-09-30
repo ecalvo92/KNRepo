@@ -10,7 +10,7 @@ namespace KN_WEB.Controllers
 {
     public class HomeController : Controller
     {
-        #region Login
+        #region Inicio de Sesión
 
         [HttpGet]
         public ActionResult Login()
@@ -28,7 +28,7 @@ namespace KN_WEB.Controllers
 
         #endregion
 
-        #region Registro
+        #region Registro de Usuarios
 
         [HttpGet]
         public ActionResult Register()
@@ -39,6 +39,24 @@ namespace KN_WEB.Controllers
 
         [HttpPost]
         public ActionResult Register(UsuarioModel model)
+        {
+            //Esta acción es un POST porque me permite recibir datos de la vista
+            return View();
+        }
+
+        #endregion
+
+        #region Olvido de Contraseña
+
+        [HttpGet]
+        public ActionResult ForgotPassword()
+        {
+            //Esta acción es un GET porque me permite entrar a la vista
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ForgotPassword(UsuarioModel model)
         {
             //Esta acción es un POST porque me permite recibir datos de la vista
             return View();
