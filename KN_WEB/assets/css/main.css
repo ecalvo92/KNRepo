@@ -59,7 +59,7 @@
     --brand-forest-medium: #072F1F;   /* Alert banner / dark card BG */
     --brand-forest-light: #1A3E30;    /* Interactive elements in dark mode */
     --brand-lime: #B4F105;            /* Lime-yellow accent highlight */
-    --brand-lime-hover: #c1f824;      
+    --brand-lime-hover: #D9416F;      
     --brand-lime-translucent: rgba(180, 241, 5, 0.15);
     
     --text-main: #0B130F;             /* Dark headers, main labels */
@@ -1901,7 +1901,7 @@ span.flatpickr-weekday {
 .login-options {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: end;
     margin-bottom: 1.75rem;
     font-size: 0.825rem;
 }
