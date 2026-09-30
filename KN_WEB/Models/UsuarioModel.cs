@@ -11,5 +11,7 @@ namespace KN_WEB.Models
         //Atributos, Propiedades, Campos
         public string CorreoElectronico { get; set; }
         public string Contrasenna { get; set; }
+        public string NombreCompleto { get; set; }
+        public string Identificacion { get; set; }
     }
 }
