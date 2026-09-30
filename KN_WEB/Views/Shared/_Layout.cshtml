@@ -16,19 +16,13 @@
 
 <body>
 
-    <!-- ==========================================
-    START: Sidebar Component
-    ========================================== -->
     <div class="sidebar-wrapper" id="sidebar">
-        <!-- Brand Logo / Identity -->
         <a href="index.html" class="sidebar-brand">
             <i class="bi bi-asterisk"></i>
             <span>Proyecto KN</span>
         </a>
 
-        <!-- Navigation Menu -->
         <div class="flex-grow-1 overflow-y-auto">
-            <!-- Group: Menu -->
             <div class="sidebar-menu-section">
                 <div class="sidebar-menu-title">Menu</div>
                 <ul class="sidebar-menu-list">
@@ -41,7 +35,6 @@
                 </ul>
             </div>
 
-            <!-- Group: Components -->
             <div class="sidebar-menu-section">
                 <div class="sidebar-menu-title">Components</div>
                 <ul class="sidebar-menu-list">
@@ -56,26 +49,20 @@
         </div>
     </div>
 
-    <!-- ==========================================
-    START: Main Content Area
-    ========================================== -->
     <div class="main-wrapper">
 
-        <!-- START: Top Navbar Component -->
         <header class="navbar-custom">
             <div class="navbar-left">
-                <!-- Desktop sidebar toggle (visible on large screens only) -->
                 <button class="btn-desktop-toggle d-none d-xl-flex align-items-center justify-content-center me-3"
                         id="desktop-sidebar-toggle" aria-label="Minimize Sidebar">
                     <i class="bi bi-chevron-bar-left"></i>
                 </button>
-                <!-- Mobile sidebar toggle -->
+
                 <button class="sidebar-toggle-btn me-2" id="sidebar-toggle" aria-label="Toggle Navigation">
                     <i class="bi bi-list"></i>
                 </button>
             </div>
 
-            <!-- Mid navbar: search pill -->
             <div class="navbar-search-wrapper">
                 <input type="text" class="navbar-search-input" placeholder="..." id="main-search">
                 <button class="navbar-search-btn" aria-label="Search">
@@ -83,9 +70,7 @@
                 </button>
             </div>
 
-            <!-- Right actions -->
             <div class="navbar-actions">
-                <!-- Profile Dropdown -->
                 <div class="dropdown ms-2">
                     <button class="navbar-profile-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false" id="profile-dropdown">
@@ -111,21 +96,8 @@
             </div>
         </header>
 
-        <!-- START: Page Header Banner -->
-        <div class="page-header">
-            <div>
-                <h1 class="page-title">Blank Page</h1>
-            </div>
-        </div>
+        @RenderBody()
 
-        <!-- START: Blank Page Content Area -->
-        <div class="card p-4 border-light shadow-sm text-center">
-            <div>
-                @RenderBody()
-            </div>
-        </div>
-   
-        <!-- START: Footer Component -->
         <footer class="footer-custom">
             <div class="footer-left">
                 <span class="footer-logo">

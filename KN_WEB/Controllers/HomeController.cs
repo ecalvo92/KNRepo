@@ -10,30 +10,15 @@ namespace KN_WEB.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
-        {
-            var matriculaModel = new Matricula
-            {
-                CantidadCursos = 3,
-                NombreUniversidad = "Universidad Fidélitas",
-                MontoCancelar = 350000M
-            };
-
-            var matriculaService = new MatriculaService();
-            matriculaModel.MontoCancelar = matriculaService.CalcularDescuento(matriculaModel.MontoCancelar);
-
-            return View(matriculaModel);
-        }     
-
-        public ActionResult About()
-        {
-            return View();
-        }        
-
-        public ActionResult Contact()
+        public ActionResult Login()
         {
             return View();
         }
+
+        public ActionResult Index()
+        {
+            return View();
+        }     
 
     }
 }

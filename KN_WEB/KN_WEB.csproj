@@ -132,6 +132,7 @@
     <Content Include="assets\css\main.css" />
     <Content Include="assets\images\avatar.png" />
     <Content Include="assets\images\favicon.ico" />
+    <Content Include="assets\js\auth.js" />
     <Content Include="assets\js\dashboard.js" />
     <Content Include="assets\libs\apexcharts\apexcharts.css" />
     <Content Include="assets\libs\apexcharts\apexcharts.min.js" />
@@ -153,8 +154,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +163,8 @@
     <Content Include="assets\libs\bootstrap-icons\fonts\bootstrap-icons.woff" />
     <Content Include="assets\libs\bootstrap-icons\fonts\bootstrap-icons.woff2" />
     <None Include="packages.config" />
+    <Content Include="Views\Shared\_LayoutExterno.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
