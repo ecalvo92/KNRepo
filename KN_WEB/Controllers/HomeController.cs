@@ -10,8 +10,17 @@ namespace KN_WEB.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
         public ActionResult Login()
         {
+            //Esta acción es un GET porque me permite entrar a la vista
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(UsuarioModel model)
+        {
+            //Esta acción es un POST porque me permite recibir datos de la vista
             return View();
         }
 

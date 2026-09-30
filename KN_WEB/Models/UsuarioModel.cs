@@ -6,11 +6,10 @@ using System.Web;
 namespace KN_WEB.Models
 {
     //Entidad, Objeto, Clase
-    public class Matricula
+    public class UsuarioModel
     {
         //Atributos, Propiedades, Campos
-        public int CantidadCursos { get; set; }
-        public string NombreUniversidad { get; set; }
-        public decimal MontoCancelar { get; set; }
+        public string CorreoElectronico { get; set; }
+        public string Contrasenna { get; set; }
     }
 }
