@@ -17,10 +17,15 @@
 
         <form method="post" asp-action="Login" asp-controller="Home" id="loginForm" class="needs-validation" novalidate>
 
+            @if (ViewBag.Message != null)
+            {
+                <div class="alert alert-danger text-center">@ViewBag.Message</div>
+            }
+
             <div class="login-form-group">
                 <label class="login-form-label">Correo Electrónico</label>
                 <div class="login-input-group">
-                    <i class="bi bi-envelope input-icon"></i>                    
+                    <i class="bi bi-envelope input-icon"></i>
                     @Html.TextBoxFor(m => m.CorreoElectronico, new { @class = "login-input" })
                 </div>
             </div>
@@ -29,7 +34,7 @@
                 <label class="login-form-label">Contraseña</label>
                 <div class="login-input-group">
                     <i class="bi bi-shield-lock input-icon"></i>
-                    @Html.TextBoxFor(m => m.Contrasenna, new { @class = "login-input login-input-password", @type="password" })
+                    @Html.TextBoxFor(m => m.Contrasenna, new { @class = "login-input login-input-password", @type = "password" })
 
                     <button type="button" class="password-toggle-btn" id="toggle-password" aria-label="Show password">
                         <i class="bi bi-eye"></i>

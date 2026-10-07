@@ -12,6 +12,8 @@ namespace KN_WEB.EF
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class KN_BDEntities : DbContext
     {
@@ -26,5 +28,39 @@ namespace KN_WEB.EF
         }
     
         public virtual DbSet<tUsuario> tUsuario { get; set; }
+    
+        public virtual int sp_RegistrarUsuario(string identificacion, string nombreCompleto, string correoElectronico, string contrasenna)
+        {
+            var identificacionParameter = identificacion != null ?
+                new ObjectParameter("Identificacion", identificacion) :
+                new ObjectParameter("Identificacion", typeof(string));
+    
+            var nombreCompletoParameter = nombreCompleto != null ?
+                new ObjectParameter("NombreCompleto", nombreCompleto) :
+                new ObjectParameter("NombreCompleto", typeof(string));
+    
+            var correoElectronicoParameter = correoElectronico != null ?
+                new ObjectParameter("CorreoElectronico", correoElectronico) :
+                new ObjectParameter("CorreoElectronico", typeof(string));
+    
+            var contrasennaParameter = contrasenna != null ?
+                new ObjectParameter("Contrasenna", contrasenna) :
+                new ObjectParameter("Contrasenna", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_RegistrarUsuario", identificacionParameter, nombreCompletoParameter, correoElectronicoParameter, contrasennaParameter);
+        }
+    
+        public virtual ObjectResult<sp_IniciarSesionUsuario_Result> sp_IniciarSesionUsuario(string correoElectronico, string contrasenna)
+        {
+            var correoElectronicoParameter = correoElectronico != null ?
+                new ObjectParameter("CorreoElectronico", correoElectronico) :
+                new ObjectParameter("CorreoElectronico", typeof(string));
+    
+            var contrasennaParameter = contrasenna != null ?
+                new ObjectParameter("Contrasenna", contrasenna) :
+                new ObjectParameter("Contrasenna", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_IniciarSesionUsuario_Result>("sp_IniciarSesionUsuario", correoElectronicoParameter, contrasennaParameter);
+        }
     }
 }

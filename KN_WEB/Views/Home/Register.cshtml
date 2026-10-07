@@ -17,6 +17,11 @@
 
         <form method="post" asp-action="Register" asp-controller="Home" id="loginForm" class="needs-validation" novalidate>
 
+            @if(ViewBag.Message != null)
+            {
+                <div class="alert alert-danger text-center">@ViewBag.Message</div>
+            }
+
             <div class="login-form-group">
                 <label class="login-form-label">Identificación</label>
                 <div class="login-input-group">

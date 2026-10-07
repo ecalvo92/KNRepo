@@ -16,14 +16,33 @@ namespace KN_WEB.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            //Esta acción es un GET porque me permite entrar a la vista
             return View();
         }
 
         [HttpPost]
         public ActionResult Login(UsuarioModel model)
         {
-            //Esta acción es un POST porque me permite recibir datos de la vista
+            try
+            {
+                using (var context = new KN_BDEntities())
+                { 
+                    //var response = context.tUsuario.Where(x => x.CorreoElectronico == model.CorreoElectronico
+                    //                                      && x.Contrasenna == model.Contrasenna
+                    //                                      && x.Estado == true).FirstOrDefault();
+
+                    var response = context.sp_IniciarSesionUsuario(model.CorreoElectronico, model.Contrasenna).FirstOrDefault();
+
+                    if (response != null)
+                        return RedirectToAction("Index", "Home");
+                }
+
+                ViewBag.Message = "No se autenticó su información, consulte con el administrador.";
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+            }
+
             return View();
         }
 
@@ -40,17 +59,31 @@ namespace KN_WEB.Controllers
         [HttpPost]
         public ActionResult Register(UsuarioModel model)
         {
-            using (var context = new KN_BDEntities())
+            try
             {
-                context.tUsuario.Add(new tUsuario
+                using (var context = new KN_BDEntities())
                 {
-                    CorreoElectronico = model.CorreoElectronico,
-                    Contrasenna = model.Contrasenna,
-                    NombreCompleto = model.NombreCompleto,
-                    Identificacion = model.Identificacion,
-                    Estado = true
-                });
-                context.SaveChanges();
+                    //context.tUsuario.Add(new tUsuario
+                    //{
+                    //    CorreoElectronico = model.CorreoElectronico,
+                    //    Contrasenna = model.Contrasenna,
+                    //    NombreCompleto = model.NombreCompleto,
+                    //    Identificacion = model.Identificacion,
+                    //    Estado = true
+                    //});
+                    //var response = context.SaveChanges();
+
+                    var response = context.sp_RegistrarUsuario(model.Identificacion, model.NombreCompleto, model.CorreoElectronico, model.Contrasenna);
+
+                    if (response > 0)
+                        return RedirectToAction("Login", "Home");
+                }
+
+                ViewBag.Message = "No se registró su información, consulte con el administrador.";
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "Se presentó un error, consulte con el administrador.";
             }
 
             return View();
