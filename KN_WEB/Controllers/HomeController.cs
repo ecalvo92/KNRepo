@@ -1,4 +1,5 @@
-﻿using KN_WEB.Models;
+﻿using KN_WEB.EF;
+using KN_WEB.Models;
 using KN_WEB.Services;
 using System;
 using System.Collections.Generic;
@@ -33,14 +34,25 @@ namespace KN_WEB.Controllers
         [HttpGet]
         public ActionResult Register()
         {
-            //Esta acción es un GET porque me permite entrar a la vista
             return View();
         }
 
         [HttpPost]
         public ActionResult Register(UsuarioModel model)
         {
-            //Esta acción es un POST porque me permite recibir datos de la vista
+            using (var context = new KN_BDEntities())
+            {
+                context.tUsuario.Add(new tUsuario
+                {
+                    CorreoElectronico = model.CorreoElectronico,
+                    Contrasenna = model.Contrasenna,
+                    NombreCompleto = model.NombreCompleto,
+                    Identificacion = model.Identificacion,
+                    Estado = true
+                });
+                context.SaveChanges();
+            }
+
             return View();
         }
 
