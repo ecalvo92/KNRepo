@@ -162,6 +162,7 @@
     <Content Include="assets\images\favicon.ico" />
     <Content Include="assets\js\auth.js" />
     <Content Include="assets\js\dashboard.js" />
+    <Content Include="assets\js\register.js" />
     <Content Include="assets\libs\apexcharts\apexcharts.css" />
     <Content Include="assets\libs\apexcharts\apexcharts.min.js" />
     <Content Include="assets\libs\bootstrap-icons\bootstrap-icons.css" />
