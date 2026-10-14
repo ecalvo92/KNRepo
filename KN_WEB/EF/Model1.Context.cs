@@ -29,6 +29,19 @@ namespace KN_WEB.EF
     
         public virtual DbSet<tUsuario> tUsuario { get; set; }
     
+        public virtual ObjectResult<sp_IniciarSesionUsuario_Result> sp_IniciarSesionUsuario(string correoElectronico, string contrasenna)
+        {
+            var correoElectronicoParameter = correoElectronico != null ?
+                new ObjectParameter("CorreoElectronico", correoElectronico) :
+                new ObjectParameter("CorreoElectronico", typeof(string));
+    
+            var contrasennaParameter = contrasenna != null ?
+                new ObjectParameter("Contrasenna", contrasenna) :
+                new ObjectParameter("Contrasenna", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_IniciarSesionUsuario_Result>("sp_IniciarSesionUsuario", correoElectronicoParameter, contrasennaParameter);
+        }
+    
         public virtual int sp_RegistrarUsuario(string identificacion, string nombreCompleto, string correoElectronico, string contrasenna)
         {
             var identificacionParameter = identificacion != null ?
@@ -48,19 +61,6 @@ namespace KN_WEB.EF
                 new ObjectParameter("Contrasenna", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_RegistrarUsuario", identificacionParameter, nombreCompletoParameter, correoElectronicoParameter, contrasennaParameter);
-        }
-    
-        public virtual ObjectResult<sp_IniciarSesionUsuario_Result> sp_IniciarSesionUsuario(string correoElectronico, string contrasenna)
-        {
-            var correoElectronicoParameter = correoElectronico != null ?
-                new ObjectParameter("CorreoElectronico", correoElectronico) :
-                new ObjectParameter("CorreoElectronico", typeof(string));
-    
-            var contrasennaParameter = contrasenna != null ?
-                new ObjectParameter("Contrasenna", contrasenna) :
-                new ObjectParameter("Contrasenna", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_IniciarSesionUsuario_Result>("sp_IniciarSesionUsuario", correoElectronicoParameter, contrasennaParameter);
         }
     }
 }
