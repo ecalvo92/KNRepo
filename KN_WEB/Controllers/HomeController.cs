@@ -3,6 +3,7 @@ using KN_WEB.Models;
 using KN_WEB.Services;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -11,6 +12,8 @@ namespace KN_WEB.Controllers
 {
     public class HomeController : Controller
     {
+        UserIdService userIdService = new UserIdService();
+
         #region Inicio de Sesión
 
         [HttpGet]
@@ -102,7 +105,45 @@ namespace KN_WEB.Controllers
         [HttpPost]
         public ActionResult ForgotPassword(UsuarioModel model)
         {
-            //Esta acción es un POST porque me permite recibir datos de la vista
+            try
+            {
+                using (var context = new KN_BDEntities())
+                {
+                    var response = context.tUsuario.Where(x => x.Identificacion == model.Identificacion
+                                                          && x.Estado == true).FirstOrDefault();
+
+                    if (response != null)
+                    {
+                        var userIdCifrado = userIdService.Cifrar(response.IdUsuario, TimeSpan.FromHours(1));
+                        var link = ConfigurationManager.AppSettings["UrlSistema"] + "Home/ChangePassword/" + userIdCifrado;
+                    }
+                }
+
+                ViewBag.Message = "No se validó su información, consulte con el administrador.";
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+            }
+
+            return View();
+        }
+
+        #endregion
+
+        #region Cambio de Contraseña Externo
+
+        [HttpGet]
+        public ActionResult ChangePassword(string id)
+        {
+            var userIdDescifrado = userIdService.Descifrar(id);
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(UsuarioModel model)
+        {
             return View();
         }
 
