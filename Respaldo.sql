@@ -25,9 +25,10 @@ SET IDENTITY_INSERT [dbo].[tUsuario] ON
 GO
 INSERT [dbo].[tUsuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado]) VALUES (1, N'304590415', N'Eduardo', N'ecalvo90415@ufide.ac.cr', N'90415', 1)
 GO
+INSERT [dbo].[tUsuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado]) VALUES (21, N'120060050', N'Alejandro Arroyo', N'aarroyo60050@ufide.ac.cr', N'87654321Sap', 1)
+GO
 SET IDENTITY_INSERT [dbo].[tUsuario] OFF
 GO
-
 
 ALTER TABLE [dbo].[tUsuario] ADD  CONSTRAINT [UK_CorreoElectronico] UNIQUE NONCLUSTERED 
 (
