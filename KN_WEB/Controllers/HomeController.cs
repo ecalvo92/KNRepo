@@ -116,6 +116,8 @@ namespace KN_WEB.Controllers
                     {
                         var userIdCifrado = userIdService.Cifrar(response.IdUsuario, TimeSpan.FromHours(1));
                         var link = ConfigurationManager.AppSettings["UrlSistema"] + "Home/ChangePassword/" + userIdCifrado;
+
+                        //Envío del correo con un mensaje que diga que ese código expira en 1 hora
                     }
                 }
 
@@ -136,14 +138,46 @@ namespace KN_WEB.Controllers
         [HttpGet]
         public ActionResult ChangePassword(string id)
         {
-            var userIdDescifrado = userIdService.Descifrar(id);
-
+            //Se guarda el id en la sesión
+            Session["IdUsuarioCifrado"] = id;
             return View();
         }
 
         [HttpPost]
         public ActionResult ChangePassword(UsuarioModel model)
         {
+            try
+            {
+                //Se lee el id de la sesión y se valida
+                var idUsuarioDescrifrado = userIdService.Descifrar(Session["IdUsuarioCifrado"].ToString());
+
+                if (idUsuarioDescrifrado == null)
+                {
+                    ViewBag.Message = "El enlace utilizado no es válido o ya expiró.";
+                    return View();
+                }
+
+                using (var context = new KN_BDEntities())
+                {
+                    var response = context.tUsuario.Where(x => x.IdUsuario == idUsuarioDescrifrado).FirstOrDefault();
+
+                    if (response != null)
+                    {
+                        response.Contrasenna = model.Contrasenna;
+                        var updateResponse = context.SaveChanges();
+
+                        if(updateResponse > 0)
+                            return RedirectToAction("Login", "Home");
+                    }
+                }
+
+                ViewBag.Message = "No se actualizó su información, consulte con el administrador.";
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+            }
+
             return View();
         }
 
