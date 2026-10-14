@@ -96,7 +96,6 @@ namespace KN_WEB.Controllers
         [HttpGet]
         public ActionResult ForgotPassword()
         {
-            //Esta acción es un GET porque me permite entrar a la vista
             return View();
         }
 
