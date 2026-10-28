@@ -42,6 +42,7 @@ namespace KN_WEB.Controllers
                     if (response != null)
                     {
                         Session["NombreUsuario"] = response.NombreCompleto;
+                        Session["NombreRol"] = response.NombreRol;
                         return RedirectToAction("Index", "Home");
                     }
                 }

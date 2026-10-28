@@ -19,5 +19,7 @@ namespace KN_WEB.EF
         public string CorreoElectronico { get; set; }
         public string Contrasenna { get; set; }
         public bool Estado { get; set; }
+        public int IdRol { get; set; }
+        public string NombreRol { get; set; }
     }
 }

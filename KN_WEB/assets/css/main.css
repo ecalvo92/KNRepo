@@ -1791,7 +1791,6 @@ span.flatpickr-weekday {
     font-size: 1.5rem;
     font-weight: 800;
     color: var(--brand-forest-dark);
-    margin-bottom: 1.5rem;
     text-decoration: none;
     transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -2117,6 +2116,36 @@ span.flatpickr-weekday {
 
 .navbar-profile-btn:hover .navbar-profile-name {
     color: var(--brand-forest-medium);
+}
+
+.navbar-profile-info {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    line-height: 1.2;
+    min-width: 0;
+    max-width: 180px;
+    text-align: left;
+}
+
+.navbar-profile-info .navbar-profile-name,
+.navbar-profile-info .navbar-profile-role {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.navbar-profile-role {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-muted-green);
+}
+
+@media (max-width: 991.98px) {
+    .navbar-profile-info {
+        max-width: 120px;
+    }
 }
 
 .navbar-profile-caret {

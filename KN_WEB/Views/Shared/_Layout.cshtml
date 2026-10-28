@@ -1,5 +1,6 @@
 ﻿@{ 
     var nombreUsuario = Session["NombreUsuario"].ToString() ?? string.Empty;
+    var nombreRol = Session["NombreRol"].ToString() ?? string.Empty;
 }
 
 <!DOCTYPE html>
@@ -8,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto KN</title>
+    <title>Librería KN</title>
 
     <link rel="icon" type="image/png" href="~/assets/images/favicon.ico">
     <link rel="stylesheet" href="~/assets/libs/bootstrap/css/bootstrap.min.css">
@@ -23,7 +24,7 @@
     <div class="sidebar-wrapper" id="sidebar">
         <a href="@Url.Action("Index","Home")" class="sidebar-brand">
             <i class="bi bi-asterisk"></i>
-            <span>Proyecto KN</span>
+            <span>Librería KN</span>
         </a>
 
         <div class="flex-grow-1 overflow-y-auto">
@@ -79,13 +80,17 @@
                     <button class="navbar-profile-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false" id="profile-dropdown">
                         <img src="~/assets/images/avatar.png" alt="Profile Image" class="navbar-profile-img">
-                        <span class="navbar-profile-name d-none d-md-inline">@nombreUsuario</span>
+                        <span class="navbar-profile-info d-none d-md-flex flex-column align-items-start text-start">
+                            <span class="navbar-profile-name d-block">@nombreUsuario</span>
+                            <span class="navbar-profile-role d-block">@nombreRol</span>
+                        </span>
                         <i class="bi bi-chevron-down navbar-profile-caret"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-profile" aria-labelledby="profile-dropdown">
+
                         <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> My Account</a></li>
                         <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Settings</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="bi bi-lock"></i> Lock Screen</a></li>
+
                         <li>
                             <hr class="dropdown-divider">
                         </li>

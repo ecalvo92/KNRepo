@@ -27,6 +27,7 @@ namespace KN_WEB.EF
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<tRol> tRol { get; set; }
         public virtual DbSet<tUsuario> tUsuario { get; set; }
     
         public virtual ObjectResult<sp_IniciarSesionUsuario_Result> sp_IniciarSesionUsuario(string correoElectronico, string contrasenna)

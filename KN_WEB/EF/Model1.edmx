@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="KN_BDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tRol">
+          <Key>
+            <PropertyRef Name="IdRol" />
+          </Key>
+          <Property Name="IdRol" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombreRol" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="tUsuario">
           <Key>
             <PropertyRef Name="IdUsuario" />
@@ -15,7 +22,20 @@
           <Property Name="CorreoElectronico" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Contrasenna" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="Estado" Type="bit" Nullable="false" />
+          <Property Name="IdRol" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_tUsuario_tRol">
+          <End Role="tRol" Type="Self.tRol" Multiplicity="1" />
+          <End Role="tUsuario" Type="Self.tUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tRol">
+              <PropertyRef Name="IdRol" />
+            </Principal>
+            <Dependent Role="tUsuario">
+              <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="sp_IniciarSesionUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CorreoElectronico" Type="nvarchar" Mode="In" />
           <Parameter Name="Contrasenna" Type="nvarchar" Mode="In" />
@@ -27,13 +47,26 @@
           <Parameter Name="Contrasenna" Type="nvarchar" Mode="In" />
         </Function>
         <EntityContainer Name="KN_BDModelStoreContainer">
+          <EntitySet Name="tRol" EntityType="Self.tRol" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tUsuario" EntityType="Self.tUsuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tUsuario_tRol" Association="Self.FK_tUsuario_tRol">
+            <End Role="tRol" EntitySet="tRol" />
+            <End Role="tUsuario" EntitySet="tUsuario" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="KN_BDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tRol">
+          <Key>
+            <PropertyRef Name="IdRol" />
+          </Key>
+          <Property Name="IdRol" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombreRol" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tUsuario" Relationship="Self.FK_tUsuario_tRol" FromRole="tRol" ToRole="tUsuario" />
+        </EntityType>
         <EntityType Name="tUsuario">
           <Key>
             <PropertyRef Name="IdUsuario" />
@@ -44,9 +77,28 @@
           <Property Name="CorreoElectronico" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Contrasenna" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <Property Name="IdRol" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tRol" Relationship="Self.FK_tUsuario_tRol" FromRole="tUsuario" ToRole="tRol" />
         </EntityType>
+        <Association Name="FK_tUsuario_tRol">
+          <End Role="tRol" Type="Self.tRol" Multiplicity="1" />
+          <End Role="tUsuario" Type="Self.tUsuario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tRol">
+              <PropertyRef Name="IdRol" />
+            </Principal>
+            <Dependent Role="tUsuario">
+              <PropertyRef Name="IdRol" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="KN_BDEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tRol" EntityType="Self.tRol" />
           <EntitySet Name="tUsuario" EntityType="Self.tUsuario" />
+          <AssociationSet Name="FK_tUsuario_tRol" Association="Self.FK_tUsuario_tRol">
+            <End Role="tRol" EntitySet="tRol" />
+            <End Role="tUsuario" EntitySet="tUsuario" />
+          </AssociationSet>
           <FunctionImport Name="sp_IniciarSesionUsuario" ReturnType="Collection(KN_BDModel.sp_IniciarSesionUsuario_Result)">
             <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
             <Parameter Name="Contrasenna" Mode="In" Type="String" />
@@ -65,6 +117,8 @@
           <Property Type="String" Name="CorreoElectronico" Nullable="false" MaxLength="100" />
           <Property Type="String" Name="Contrasenna" Nullable="false" MaxLength="15" />
           <Property Type="Boolean" Name="Estado" Nullable="false" />
+          <Property Type="Int32" Name="IdRol" Nullable="false" />
+          <Property Type="String" Name="NombreRol" Nullable="false" MaxLength="100" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -72,6 +126,14 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="KN_BDModelStoreContainer" CdmEntityContainer="KN_BDEntities">
+          <EntitySetMapping Name="tRol">
+            <EntityTypeMapping TypeName="KN_BDModel.tRol">
+              <MappingFragment StoreEntitySet="tRol">
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="NombreRol" ColumnName="NombreRol" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tUsuario">
             <EntityTypeMapping TypeName="KN_BDModel.tUsuario">
               <MappingFragment StoreEntitySet="tUsuario">
@@ -81,6 +143,7 @@
                 <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
                 <ScalarProperty Name="Contrasenna" ColumnName="Contrasenna" />
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -93,6 +156,8 @@
                 <ScalarProperty Name="CorreoElectronico" ColumnName="CorreoElectronico" />
                 <ScalarProperty Name="Contrasenna" ColumnName="Contrasenna" />
                 <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="IdRol" ColumnName="IdRol" />
+                <ScalarProperty Name="NombreRol" ColumnName="NombreRol" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
