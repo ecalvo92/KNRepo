@@ -4,7 +4,11 @@ using KN_WEB.Services;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -103,7 +107,7 @@ namespace KN_WEB.Controllers
         }
 
         [HttpPost]
-        public ActionResult ForgotPassword(UsuarioModel model)
+        public async Task<ActionResult> ForgotPassword(UsuarioModel model)
         {
             try
             {
@@ -118,6 +122,16 @@ namespace KN_WEB.Controllers
                         var link = ConfigurationManager.AppSettings["UrlSistema"] + "Home/ChangePassword/" + userIdCifrado;
 
                         //Envío del correo con un mensaje que diga que ese código expira en 1 hora
+
+                        var ruta = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "recursos", "RecuperarContrasena.html");
+
+                        var html = System.IO.File.ReadAllText(ruta, Encoding.UTF8)
+                            .Replace("{{Nombre}}", WebUtility.HtmlEncode(response.NombreCompleto))
+                            .Replace("{{Link}}", WebUtility.HtmlEncode(link))
+                            .Replace("{{Anio}}", DateTime.Now.Year.ToString());
+
+                        await userIdService.EnviarCorreo(response.CorreoElectronico, "Recuperación de Contraseña", html);
+                        return RedirectToAction("Login", "Home");
                     }
                 }
 
