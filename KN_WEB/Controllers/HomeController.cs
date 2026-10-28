@@ -40,7 +40,10 @@ namespace KN_WEB.Controllers
                     var response = context.sp_IniciarSesionUsuario(model.CorreoElectronico, model.Contrasenna).FirstOrDefault();
 
                     if (response != null)
+                    {
+                        Session["NombreUsuario"] = response.NombreCompleto;
                         return RedirectToAction("Index", "Home");
+                    }
                 }
 
                 ViewBag.Message = "No se autenticó su información, consulte con el administrador.";
@@ -196,6 +199,12 @@ namespace KN_WEB.Controllers
         }
 
         #endregion
+
+        public ActionResult CerrarSesion()
+        {
+            Session.Clear();
+            return RedirectToAction("Login", "Home");
+        }
 
         public ActionResult Index()
         {
