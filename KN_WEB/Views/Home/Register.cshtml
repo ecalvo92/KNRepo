@@ -16,9 +16,10 @@
         </a>
         <h4 class="text-center mb-3">Registro de Usuarios</h4>
 
-        <form method="post" asp-action="Register" asp-controller="Home" id="registerForm" class="needs-validation" novalidate>
+        @using (Html.BeginForm("Register", "Home", FormMethod.Post, new { id = "registerForm" }))
+        {
 
-            @if (ViewBag.Message != null)
+            if (ViewBag.Message != null)
             {
                 <div class="alert alert-danger text-center">@ViewBag.Message</div>
             }
@@ -63,7 +64,7 @@
                 <span>Procesar</span>
             </button>
 
-        </form>
+        }
 
         <div class="login-divider"></div>
 

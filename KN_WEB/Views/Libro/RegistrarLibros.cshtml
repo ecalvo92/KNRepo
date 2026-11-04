@@ -1,0 +1,18 @@
+﻿@model KN_WEB.Models.Libro
+
+@{
+    ViewBag.Title = "RegistrarLibros";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>RegistrarLibros</h2>
+
+@using (Html.BeginForm("ConsultarLibrosAPI", "Libro", FormMethod.Post, new {  }))
+{ 
+    @Html.TextBoxFor(m => m.Titulo, new { @class = "login-input" })
+
+    <button type="submit" class="btn-login" id="btn-submit">
+        <span>Consultar</span>
+    </button>
+
+}
