@@ -29,6 +29,7 @@ namespace KN_WEB.EF
     
         public virtual DbSet<tRol> tRol { get; set; }
         public virtual DbSet<tUsuario> tUsuario { get; set; }
+        public virtual DbSet<tError> tError { get; set; }
     
         public virtual ObjectResult<sp_IniciarSesionUsuario_Result> sp_IniciarSesionUsuario(string correoElectronico, string contrasenna)
         {
@@ -62,6 +63,27 @@ namespace KN_WEB.EF
                 new ObjectParameter("Contrasenna", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_RegistrarUsuario", identificacionParameter, nombreCompletoParameter, correoElectronicoParameter, contrasennaParameter);
+        }
+    
+        public virtual int sp_RegistrarError(string descripcion, Nullable<System.DateTime> fechaHora, string origen, Nullable<int> idUsuario)
+        {
+            var descripcionParameter = descripcion != null ?
+                new ObjectParameter("Descripcion", descripcion) :
+                new ObjectParameter("Descripcion", typeof(string));
+    
+            var fechaHoraParameter = fechaHora.HasValue ?
+                new ObjectParameter("FechaHora", fechaHora) :
+                new ObjectParameter("FechaHora", typeof(System.DateTime));
+    
+            var origenParameter = origen != null ?
+                new ObjectParameter("Origen", origen) :
+                new ObjectParameter("Origen", typeof(string));
+    
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("IdUsuario", idUsuario) :
+                new ObjectParameter("IdUsuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_RegistrarError", descripcionParameter, fechaHoraParameter, origenParameter, idUsuarioParameter);
         }
     }
 }

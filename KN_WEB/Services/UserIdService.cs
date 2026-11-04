@@ -1,10 +1,13 @@
-﻿using MailKit.Net.Smtp;
+﻿using KN_WEB.EF;
+using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using System;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace KN_WEB.Services
 {
@@ -83,6 +86,17 @@ namespace KN_WEB.Services
                 await smtp.AuthenticateAsync(cuentaCorreo, contrasenaCorreo);
                 await smtp.SendAsync(mensaje);
                 await smtp.DisconnectAsync(true);
+            }
+        }
+
+        public void RegistrarError(string mensaje, string origen)
+        {
+            var fechaHora = DateTime.Now;
+            var idUsuario = int.Parse(HttpContext.Current.Session["IdUsuario"]?.ToString() ?? "0");
+            
+            using (var context = new KN_BDEntities())
+            {
+                context.sp_RegistrarError(mensaje, fechaHora, origen, idUsuario);
             }
         }
 

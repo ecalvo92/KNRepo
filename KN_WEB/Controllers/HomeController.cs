@@ -7,6 +7,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -41,6 +42,7 @@ namespace KN_WEB.Controllers
 
                     if (response != null)
                     {
+                        Session["IdUsuario"] = response.IdUsuario;
                         Session["NombreUsuario"] = response.NombreCompleto;
                         Session["NombreRol"] = response.NombreRol;
                         return RedirectToAction("Index", "Home");
@@ -49,9 +51,10 @@ namespace KN_WEB.Controllers
 
                 ViewBag.Message = "No se autenticó su información, consulte con el administrador.";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
             }
 
             return View();
@@ -92,9 +95,10 @@ namespace KN_WEB.Controllers
 
                 ViewBag.Message = "No se registró su información, consulte con el administrador.";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
             }
 
             return View();
@@ -141,9 +145,10 @@ namespace KN_WEB.Controllers
 
                 ViewBag.Message = "No se validó su información, consulte con el administrador.";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
             }
 
             return View();
@@ -191,9 +196,10 @@ namespace KN_WEB.Controllers
 
                 ViewBag.Message = "No se actualizó su información, consulte con el administrador.";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
             }
 
             return View();

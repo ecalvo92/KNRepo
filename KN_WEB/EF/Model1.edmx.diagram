@@ -8,6 +8,7 @@
         <EntityTypeShape EntityType="KN_BDModel.tRol" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="KN_BDModel.tUsuario" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="KN_BDModel.FK_tUsuario_tRol" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="KN_BDModel.tError" Width="1.5" PointX="6.125" PointY="0.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
