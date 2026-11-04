@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="KN_BDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="KN_BDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="tError">
           <Key>
             <PropertyRef Name="IdError" />
@@ -14,6 +14,19 @@
           <Property Name="FechaHora" Type="datetime" Nullable="false" />
           <Property Name="Origen" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="IdUsuario" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tLibro">
+          <Key>
+            <PropertyRef Name="IdLibro" />
+          </Key>
+          <Property Name="IdLibro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Titulo" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Autor" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Sinopsis" Type="varchar(max)" Nullable="false" />
+          <Property Name="Portada" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Genero" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Precio" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Estado" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="tRol">
           <Key>
@@ -64,6 +77,7 @@
         </Function>
         <EntityContainer Name="KN_BDModelStoreContainer">
           <EntitySet Name="tError" EntityType="Self.tError" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tLibro" EntityType="Self.tLibro" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tRol" EntityType="Self.tRol" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tUsuario" EntityType="Self.tUsuario" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_tUsuario_tRol" Association="Self.FK_tUsuario_tRol">
@@ -71,10 +85,34 @@
             <End Role="tUsuario" EntitySet="tUsuario" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="KN_BDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tError">
+          <Key>
+            <PropertyRef Name="IdError" />
+          </Key>
+          <Property Name="IdError" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaHora" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Origen" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tLibro">
+          <Key>
+            <PropertyRef Name="IdLibro" />
+          </Key>
+          <Property Name="IdLibro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Titulo" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Autor" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sinopsis" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Portada" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Genero" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Precio" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="Estado" Type="Boolean" Nullable="false" />
+        </EntityType>
         <EntityType Name="tRol">
           <Key>
             <PropertyRef Name="IdRol" />
@@ -109,6 +147,8 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="KN_BDEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tError" EntityType="Self.tError" />
+          <EntitySet Name="tLibro" EntityType="Self.tLibro" />
           <EntitySet Name="tRol" EntityType="Self.tRol" />
           <EntitySet Name="tUsuario" EntityType="Self.tUsuario" />
           <AssociationSet Name="FK_tUsuario_tRol" Association="Self.FK_tUsuario_tRol">
@@ -119,18 +159,17 @@
             <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
             <Parameter Name="Contrasenna" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="sp_RegistrarUsuario">
-            <Parameter Name="Identificacion" Mode="In" Type="String" />
-            <Parameter Name="NombreCompleto" Mode="In" Type="String" />
-            <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
-            <Parameter Name="Contrasenna" Mode="In" Type="String" />
-          </FunctionImport>
-          <EntitySet Name="tError" EntityType="KN_BDModel.tError" />
           <FunctionImport Name="sp_RegistrarError">
             <Parameter Name="Descripcion" Mode="In" Type="String" />
             <Parameter Name="FechaHora" Mode="In" Type="DateTime" />
             <Parameter Name="Origen" Mode="In" Type="String" />
             <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_RegistrarUsuario">
+            <Parameter Name="Identificacion" Mode="In" Type="String" />
+            <Parameter Name="NombreCompleto" Mode="In" Type="String" />
+            <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
+            <Parameter Name="Contrasenna" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_IniciarSesionUsuario_Result">
@@ -143,22 +182,37 @@
           <Property Type="Int32" Name="IdRol" Nullable="false" />
           <Property Type="String" Name="NombreRol" Nullable="false" MaxLength="100" />
         </ComplexType>
-        <EntityType Name="tError">
-          <Key>
-            <PropertyRef Name="IdError" />
-          </Key>
-          <Property Name="IdError" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="FechaHora" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Origen" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="IdUsuario" Type="Int32" Nullable="false" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="KN_BDModelStoreContainer" CdmEntityContainer="KN_BDEntities">
+          <EntitySetMapping Name="tError">
+            <EntityTypeMapping TypeName="KN_BDModel.tError">
+              <MappingFragment StoreEntitySet="tError">
+                <ScalarProperty Name="IdError" ColumnName="IdError" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
+                <ScalarProperty Name="Origen" ColumnName="Origen" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tLibro">
+            <EntityTypeMapping TypeName="KN_BDModel.tLibro">
+              <MappingFragment StoreEntitySet="tLibro">
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="Titulo" ColumnName="Titulo" />
+                <ScalarProperty Name="Autor" ColumnName="Autor" />
+                <ScalarProperty Name="Sinopsis" ColumnName="Sinopsis" />
+                <ScalarProperty Name="Portada" ColumnName="Portada" />
+                <ScalarProperty Name="Genero" ColumnName="Genero" />
+                <ScalarProperty Name="Precio" ColumnName="Precio" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tRol">
             <EntityTypeMapping TypeName="KN_BDModel.tRol">
               <MappingFragment StoreEntitySet="tRol">
@@ -194,19 +248,8 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_RegistrarUsuario" FunctionName="KN_BDModel.Store.sp_RegistrarUsuario" />
-          <EntitySetMapping Name="tError">
-            <EntityTypeMapping TypeName="KN_BDModel.tError">
-              <MappingFragment StoreEntitySet="tError">
-                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
-                <ScalarProperty Name="Origen" ColumnName="Origen" />
-                <ScalarProperty Name="FechaHora" ColumnName="FechaHora" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-                <ScalarProperty Name="IdError" ColumnName="IdError" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_RegistrarError" FunctionName="KN_BDModel.Store.sp_RegistrarError" />
+          <FunctionImportMapping FunctionImportName="sp_RegistrarUsuario" FunctionName="KN_BDModel.Store.sp_RegistrarUsuario" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

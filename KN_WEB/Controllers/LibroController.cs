@@ -1,4 +1,5 @@
-﻿using KN_WEB.Models;
+﻿using KN_WEB.EF;
+using KN_WEB.Models;
 using KN_WEB.Services;
 using Newtonsoft.Json.Linq;
 using System;
@@ -9,18 +10,34 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace KN_WEB.Controllers
 {
     public class LibroController : Controller
     {
         HttpClient http = new HttpClient();
+        UserIdService userIdService = new UserIdService();
 
         [HttpGet]
         public ActionResult ConsultarLibros()
         {
-            //Permitir al Admin consultar los libros ya registrados            
-            return View();
+            var libros = new List<tLibro>();
+
+            try
+            {
+                using (var context = new KN_BDEntities())
+                {
+                    libros = context.tLibro.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
+            }
+
+            return View(libros);
         }
 
         [HttpGet]

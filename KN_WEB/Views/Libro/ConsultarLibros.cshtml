@@ -1,10 +1,31 @@
-﻿
-@{
-    ViewBag.Title = "ConsultarLibros";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@model List<KN_WEB.EF.tLibro>
 
 <a href="@Url.Action("RegistrarLibros","Libro")"> Agregar </a>
 
-<h2>ConsultarLibros</h2>
-
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Portada</th>
+            <th>Género</th>
+            <th>Precio</th>
+            <th>Estado</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var libro in Model)
+        {
+            <tr>
+                <td>@libro.IdLibro</td>
+                <td>@libro.Titulo</td>
+                <td>@libro.Autor</td>
+                <td class="text-center"><img src="@libro.Portada" alt="Portada" /></td>
+                <td>@libro.Genero</td>
+                <td>@libro.Precio.ToString("N2")</td>
+                <td>@(libro.Estado ? "Activo" : "Inactivo")</td>
+            </tr>
+        }
+    </tbody>
+</table>

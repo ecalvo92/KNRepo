@@ -4,11 +4,12 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="798e4501234c4832833ca1e90cf41f8d" Name="Diagram1">
+      <Diagram DiagramId="d2c30efc50484e92af11eaa06a95f35c" Name="Diagram1">
+        <EntityTypeShape EntityType="KN_BDModel.tError" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="KN_BDModel.tLibro" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="KN_BDModel.tRol" Width="1.5" PointX="0.75" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="KN_BDModel.tUsuario" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="KN_BDModel.FK_tUsuario_tRol" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="KN_BDModel.tError" Width="1.5" PointX="6.125" PointY="0.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
