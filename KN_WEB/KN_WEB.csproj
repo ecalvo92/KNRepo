@@ -205,6 +205,7 @@
     <Content Include="assets\images\favicon.ico" />
     <Content Include="assets\js\auth.js" />
     <Content Include="assets\js\changePassword.js" />
+    <Content Include="assets\js\consultarLibros.js" />
     <Content Include="assets\js\dashboard.js" />
     <Content Include="assets\js\forgotPassword.js" />
     <Content Include="assets\js\login.js" />
