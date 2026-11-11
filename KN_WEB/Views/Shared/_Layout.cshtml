@@ -1,6 +1,7 @@
-﻿@{ 
+﻿@{
     var nombreUsuario = Session["NombreUsuario"].ToString() ?? string.Empty;
     var nombreRol = Session["NombreRol"].ToString() ?? string.Empty;
+    var idRol = Session["IdRol"].ToString() ?? String.Empty;
 
     var partes = nombreUsuario.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
     var iniciales = partes.Length > 3 ? $"{partes[0][0]}{partes[2][0]}".ToUpper()
@@ -36,7 +37,6 @@
 
         <div class="flex-grow-1 overflow-y-auto">
             <div class="sidebar-menu-section">
-                <div class="sidebar-menu-title">Menu</div>
                 <ul class="sidebar-menu-list">
                     <li class="sidebar-menu-item">
                         <a href="" class="sidebar-menu-link" id="menu-overview" title="Overview">
@@ -47,7 +47,8 @@
                 </ul>
             </div>
 
-            <div class="sidebar-menu-section">
+            @if (idRol == "2")
+            {
                 <ul class="sidebar-menu-list">
                     <li class="sidebar-menu-item">
                         <a href="@Url.Action("ConsultarLibros","Libro")" class="sidebar-menu-link" id="menu-basictables" title="Basic Tables">
@@ -56,7 +57,8 @@
                         </a>
                     </li>
                 </ul>
-            </div>
+            }
+
         </div>
     </div>
 

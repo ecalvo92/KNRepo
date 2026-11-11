@@ -1,20 +1,16 @@
 ﻿using KN_WEB.EF;
 using KN_WEB.Models;
 using KN_WEB.Services;
-using Microsoft.Ajax.Utilities;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Net.Http;
 using System.Web.Mvc;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace KN_WEB.Controllers
 {
     public class LibroController : Controller
     {
-        HttpClient http = new HttpClient();
         UserIdService userIdService = new UserIdService();
 
         #region Consulta de Libros
@@ -56,7 +52,7 @@ namespace KN_WEB.Controllers
             try
             {
                 ViewBag.TituloBusqueda = model.Titulo;
-                ViewBag.Resultados = BuscarLibros(model.Titulo);
+                ViewBag.Resultados = userIdService.BuscarLibros(model.Titulo);
             }
             catch (Exception ex)
             {
@@ -103,44 +99,106 @@ namespace KN_WEB.Controllers
 
         #endregion
 
-        private List<LibroApi> BuscarLibros(string titulo)
+        #region Actualizar Libros
+
+        [HttpGet]
+        public ActionResult ActualizarLibros(int id)
         {
-            string apiKey = ConfigurationManager.AppSettings["GoogleBooksApiKey"];
+            var libro = new LibroApi();
 
-            string url = "https://www.googleapis.com/books/v1/volumes?maxResults=40&q=intitle:"
-                         + Uri.EscapeDataString(titulo)
-                         + "&key=" + apiKey;
-
-            var json = JObject.Parse(http.GetStringAsync(url).Result);
-
-            if (json["items"] == null)
-                return new List<LibroApi>();
-
-            return json["items"]
-                .Where(i => !string.IsNullOrWhiteSpace((string)i["volumeInfo"]["imageLinks"]?["thumbnail"]))
-                .Select(i => new LibroApi
+            try
+            {
+                using (var context = new KN_BDEntities())
                 {
-                    Titulo = (string)i["volumeInfo"]["title"],
-                    Autor = (string)i["volumeInfo"]["authors"]?.FirstOrDefault(),
-                    Sinopsis = (string)i["volumeInfo"]["description"],
-                    Genero = (string)i["volumeInfo"]["categories"]?.FirstOrDefault(),
-                    Portada = ((string)i["volumeInfo"]["imageLinks"]?["thumbnail"])?.Replace("http://", "https://")
-                })
-                .DistinctBy(x => new { x.Titulo, x.Autor })
-                .OrderBy(x => x.Titulo)
-                .Take(20)
-                .ToList();
+                    var response = context.tLibro.FirstOrDefault(x => x.IdLibro == id);
+
+                    libro.IdLibro = response.IdLibro;
+                    libro.Titulo = response.Titulo;
+                    libro.Autor = response.Autor;
+                    libro.Sinopsis = response.Sinopsis;
+                    libro.Portada = response.Portada;
+                    libro.Genero = response.Genero;
+                    libro.Precio = response.Precio;
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
+            }
+
+            return View(libro);
         }
 
+        [HttpPost]
+        public ActionResult ActualizarLibros(LibroApi model)
+        {
+            try
+            {
+                using (var context = new KN_BDEntities())
+                {
+                    var response = context.tLibro.Where(x => x.IdLibro == model.IdLibro).FirstOrDefault();
 
-        //public ActionResult ActualizarLibros()
-        //{
+                    if (response != null)
+                    {
+                        response.Titulo = model.Titulo;
+                        response.Autor = model.Autor;
+                        response.Sinopsis = model.Sinopsis;
+                        response.Portada = model.Portada;
+                        response.Genero = model.Genero;
+                        response.Precio = model.Precio;
+                        var updateResponse = context.SaveChanges();
 
-        //}
+                        if (updateResponse > 0)
+                            return RedirectToAction("ConsultarLibros", "Libro");
+                    }
+                }
 
-        //public ActionResult CambiarEstadoLibros()
-        //{
+                ViewBag.Message = "No se actualizó la información del libro, consulte con el administrador.";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
+            }
 
-        //}
+            return View();
+        }
+
+        #endregion
+
+        #region Inactivar Libros
+
+        [HttpGet]
+        public ActionResult InactivarLibros(int id)
+        {
+            try
+            {
+                using (var context = new KN_BDEntities())
+                {
+                    var response = context.tLibro.Where(x => x.IdLibro == id).FirstOrDefault();
+
+                    if (response != null)
+                    {
+                        response.Estado = false;
+                        var updateResponse = context.SaveChanges();
+
+                        if (updateResponse > 0)
+                            return RedirectToAction("ConsultarLibros", "Libro");
+                    }
+                }
+
+                ViewBag.Message = "No se actualizó la información del libro, consulte con el administrador.";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
+            }
+
+            return View();
+        }
+
+        #endregion
     }
 }

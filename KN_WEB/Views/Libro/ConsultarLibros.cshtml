@@ -22,6 +22,7 @@
                     <th>Género</th>
                     <th class="text-end">Precio</th>
                     <th class="text-center">Estado</th>
+                    <th class="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,11 +32,19 @@
                         <td>@libro.IdLibro</td>
                         <td>@libro.Titulo</td>
                         <td>@libro.Autor</td>
-                        <td class="text-center"><img src="@libro.Portada" alt="Portada" /></td>
+                        <td class="text-center"><img src="@libro.Portada" alt="Portada" width="125" height="175" /></td>
                         <td>@libro.Genero</td>
                         <td class="text-end" data-order="@libro.Precio">@libro.Precio.ToString("N2")</td>
                         <td class="text-center">
                             <span class="badge-table @(libro.Estado ? "success" : "failed")">@(libro.Estado ? "Activo" : "Inactivo")</span>
+                        </td>
+                        <td class="text-center">
+
+                            @if(libro.Estado)
+                            { 
+                                <a href="@Url.Action("ActualizarLibros","Libro", new { id = libro.IdLibro })" class="btn btn-dark"><i class="bi bi-pencil-square"></i></a>
+                                <a href="@Url.Action("InactivarLibros","Libro", new { id = libro.IdLibro })" class="btn btn-dark"><i class="bi bi-trash-fill"></i></a>
+                            }
                         </td>
                     </tr>
                 }

@@ -1,18 +1,27 @@
 ﻿using KN_WEB.EF;
+using KN_WEB.Models;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.Ajax.Utilities;
 using MimeKit;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using static System.Net.WebRequestMethods;
 
 namespace KN_WEB.Services
 {
     //Entidad, Objeto, Clase
     public class UserIdService
     {
+        HttpClient http = new HttpClient();
         private readonly byte[] Key = Convert.FromBase64String("sy+v61jJHH5tZTjth2g+PwKpfUiNXWA0ImlUWxikTKUedfPEC6zrkDSzsneTbfkTXJnaEchH7BcVBF4XkqIMDw==");
 
         public string Cifrar(int userId, TimeSpan vigencia)
@@ -99,5 +108,32 @@ namespace KN_WEB.Services
             }
         }
 
+        public List<LibroApi> BuscarLibros(string titulo)
+        {
+            string apiKey = ConfigurationManager.AppSettings["GoogleBooksApiKey"];
+            string url = ConfigurationManager.AppSettings["UrlGoogleApi"]
+                         + Uri.EscapeDataString(titulo)
+                         + "&key=" + apiKey;
+
+            var json = JObject.Parse(http.GetStringAsync(url).Result);
+
+            if (json["items"] == null)
+                return new List<LibroApi>();
+
+            return json["items"]
+                .Where(i => !string.IsNullOrWhiteSpace((string)i["volumeInfo"]["imageLinks"]?["thumbnail"]))
+                .Select(i => new LibroApi
+                {
+                    Titulo = (string)i["volumeInfo"]["title"],
+                    Autor = (string)i["volumeInfo"]["authors"]?.FirstOrDefault(),
+                    Sinopsis = (string)i["volumeInfo"]["description"],
+                    Genero = (string)i["volumeInfo"]["categories"]?.FirstOrDefault(),
+                    Portada = ((string)i["volumeInfo"]["imageLinks"]?["thumbnail"])?.Replace("http://", "https://")
+                })
+                .DistinctBy(x => new { x.Titulo, x.Autor })
+                .OrderBy(x => x.Titulo)
+                .Take(20)
+                .ToList();
+        }
     }
 }

@@ -61,9 +61,39 @@ CREATE TABLE [dbo].[tUsuario](
 ) ON [PRIMARY]
 GO
 
+SET IDENTITY_INSERT [dbo].[tError] ON 
+GO
+INSERT [dbo].[tError] ([IdError], [Descripcion], [FechaHora], [Origen], [IdUsuario]) VALUES (1, N'Value cannot be null.
+Parameter name: stringToEscape', CAST(N'2026-11-10T19:05:35.893' AS DateTime), N'Libro - ConsultarLibrosAPI', 1)
+GO
+INSERT [dbo].[tError] ([IdError], [Descripcion], [FechaHora], [Origen], [IdUsuario]) VALUES (2, N'Value cannot be null.
+Parameter name: stringToEscape', CAST(N'2026-11-10T19:05:40.317' AS DateTime), N'Libro - ConsultarLibrosAPI', 1)
+GO
+INSERT [dbo].[tError] ([IdError], [Descripcion], [FechaHora], [Origen], [IdUsuario]) VALUES (3, N'Value cannot be null.
+Parameter name: stringToEscape', CAST(N'2026-11-10T19:05:41.470' AS DateTime), N'Libro - ConsultarLibrosAPI', 1)
+GO
+INSERT [dbo].[tError] ([IdError], [Descripcion], [FechaHora], [Origen], [IdUsuario]) VALUES (4, N'Value cannot be null.
+Parameter name: stringToEscape', CAST(N'2026-11-10T19:05:41.923' AS DateTime), N'Libro - ConsultarLibrosAPI', 1)
+GO
+INSERT [dbo].[tError] ([IdError], [Descripcion], [FechaHora], [Origen], [IdUsuario]) VALUES (5, N'Value cannot be null.
+Parameter name: stringToEscape', CAST(N'2026-11-10T19:05:42.313' AS DateTime), N'Libro - ConsultarLibrosAPI', 1)
+GO
+INSERT [dbo].[tError] ([IdError], [Descripcion], [FechaHora], [Origen], [IdUsuario]) VALUES (6, N'Value cannot be null.
+Parameter name: stringToEscape', CAST(N'2026-11-10T19:05:42.680' AS DateTime), N'Libro - ConsultarLibrosAPI', 1)
+GO
+INSERT [dbo].[tError] ([IdError], [Descripcion], [FechaHora], [Origen], [IdUsuario]) VALUES (7, N'Value cannot be null.
+Parameter name: stringToEscape', CAST(N'2026-11-10T19:05:44.363' AS DateTime), N'Libro - ConsultarLibrosAPI', 1)
+GO
+SET IDENTITY_INSERT [dbo].[tError] OFF
+GO
+
 SET IDENTITY_INSERT [dbo].[tLibro] ON 
 GO
-INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado]) VALUES (1, N'Tadeo, aprendiz de pirata', N'MÉNDEZ MONASTERIO, KIKO', N'Para realizar su mayor ilusión, ser pirata, Tadeo, en cuanto tuvo edad, se lanzó al mar en una antigua barquita de pesca, pertrechada ahora con dos cañones y rebautizada con el nombre de “La Espada del Mar”. Sabía Tadeo que lo primero que tenía que hacer era entrevistarse con el gobernador de la Isla del Sable, el famoso pirata Barbagrís, y presentarle sus respetos. Cuando por fin consigue arribar a la isla y presentarse, Barbagrís se ríe de su aspecto enclenque y le comenta que para ser pirata hay que robar oro: sin él, nunca será nadie. Novela de aventuras enmarcada en un ambiente de piratas que parodia y reescribe las normas de tal subgénero adaptándolo además a las claves de la literatura infantil. A partir de un texto ágil y ameno, el autor nos presenta una divertida novela de aventuras, en la que Tadeo, un hombrecillo pequeño y gran marinero, tendrá como principal problema para conseguir su propósito no sólo su aspecto, sino su propia conciencia. A partir de 10 años', N'https://books.google.com/books/content?id=FaSaDwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', N'Juvenile Fiction', CAST(7200.00 AS Decimal(10, 2)), 1)
+INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado]) VALUES (1, N'Superman on the Couch', N'Danny Fingeroth', N'Why are so many of the superhero myths tied up with loss, often violent, of parents or parental figures? What is the significance of the dual identity? What makes some superhuman figures "good" and others "evil"? Why are so many of the prime superheroes white and male? How has the superhero evolved over the course of the 20th and early 21st centuries? And how might the myths be changing? Why is it that the key superhero archetypes - Superman, Batman, Wonder Woman, Spider-Man, the X-Men - touch primal needs and experiences in everyone? Why has the superhero moved beyond the pages of comics into other media? All these topics, and more, are covered in this lively and original exploration of the reasons why the superhero - in comic books, films, and TV - is such a potent myth for our times and culture.>', N'https://books.google.com/books/content?id=lFIyvSxR_SkC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', N'Comics & Graphic Novels', CAST(12000.00 AS Decimal(10, 2)), 0)
+GO
+INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado]) VALUES (2, N'Percy Jackson and the Titan''s Curse (Book 3)', N'Rick Riordan J', N'The third book in the bestselling Percy Jackson and the Olympians series. Now with a new cover look! Discover the story behind the Disney+ series. HALF BOY - HALF GOD - ALL HERO. It''s not every day you find yourself in combat with a half-lion, half human. . . Percy Jackson has a lot on his plate. A powerful goddess has gone missing. The Greek gods are on the brink of war with the Titans. And there''s the minor threat of a mystery beast that could destroy Mount Olympus forever. This time, Percy''s going to need help and he''s found two powerful demigods for the job. . .There''s just the small problem of the prophecy. The one that has predicted not all of them will survive. But when you''re the son of a Greek god, it happens. Right?', N'https://tse4.mm.bing.net/th/id/OIP.9O7aQWJkHENJPnTqtwJ-PgHaKi?r=0&rs=1&pid=ImgDetMain&o=7&rm=3', N'Juvenile Fictions', CAST(10000.00 AS Decimal(10, 2)), 0)
+GO
+INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado]) VALUES (3, N'Pirates of the Caribbean, Jack Sparrow', N'Rob Kidd', N'Meet Disney''s Jack Sparrow', N'https://es.web.img3.acsta.net/pictures/14/03/25/11/14/498694.jpg', N'Adventure stories, American', CAST(15000.00 AS Decimal(10, 2)), 1)
 GO
 SET IDENTITY_INSERT [dbo].[tLibro] OFF
 GO

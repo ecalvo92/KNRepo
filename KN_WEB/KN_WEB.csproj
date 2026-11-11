@@ -202,6 +202,7 @@
     <Content Include="assets\css\main.css" />
     <Content Include="assets\images\avatar.png" />
     <Content Include="assets\images\favicon.ico" />
+    <Content Include="assets\js\actualizarLibros.js" />
     <Content Include="assets\js\auth.js" />
     <Content Include="assets\js\changePassword.js" />
     <Content Include="assets\js\consultarLibros.js" />
@@ -264,6 +265,7 @@
     <Content Include="Views\Home\ChangePassword.cshtml" />
     <Content Include="Views\Libro\ConsultarLibros.cshtml" />
     <Content Include="Views\Libro\RegistrarLibros.cshtml" />
+    <Content Include="Views\Libro\ActualizarLibros.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
