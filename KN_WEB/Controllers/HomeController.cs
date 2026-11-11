@@ -2,15 +2,12 @@
 using KN_WEB.Models;
 using KN_WEB.Services;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace KN_WEB.Controllers
@@ -33,7 +30,7 @@ namespace KN_WEB.Controllers
             try
             {
                 using (var context = new KN_BDEntities())
-                { 
+                {
                     //var response = context.tUsuario.Where(x => x.CorreoElectronico == model.CorreoElectronico
                     //                                      && x.Contrasenna == model.Contrasenna
                     //                                      && x.Estado == true).FirstOrDefault();
@@ -189,7 +186,7 @@ namespace KN_WEB.Controllers
                         response.Contrasenna = model.Contrasenna;
                         var updateResponse = context.SaveChanges();
 
-                        if(updateResponse > 0)
+                        if (updateResponse > 0)
                             return RedirectToAction("Login", "Home");
                     }
                 }

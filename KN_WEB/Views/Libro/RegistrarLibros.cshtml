@@ -17,7 +17,7 @@
 
     @using (Html.BeginForm("ConsultarLibrosAPI", "Libro", FormMethod.Post, new { id = "consultarLibroForm" }))
     {
-        <div class="row g-3 align-items-end">
+        <div class="row g-3 align-items-start">
             <div class="col-12 col-md">
                 <label class="login-form-label">Título a consultar</label>
                 <div class="login-input-group">
@@ -26,6 +26,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-auto">
+                <label class="login-form-label d-none d-md-block invisible">&nbsp;</label>
                 <button type="submit" class="btn-dark-custom w-100 justify-content-center">
                     <span>Consultar</span>
                 </button>
@@ -140,8 +141,8 @@
                 </div>
             </div>
 
-            <div class="col-12">
-                <button type="submit" class="btn-login" id="btn-submit">
+            <div class="col-12 d-flex justify-content-end">
+                <button type="submit" class="btn-login w-auto px-5" id="btn-submit">
                     <span>Procesar</span>
                 </button>
             </div>

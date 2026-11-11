@@ -7,7 +7,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace KN_WEB.Services
 {
@@ -93,7 +92,7 @@ namespace KN_WEB.Services
         {
             var fechaHora = DateTime.Now;
             var idUsuario = int.Parse(HttpContext.Current.Session["IdUsuario"]?.ToString() ?? "0");
-            
+
             using (var context = new KN_BDEntities())
             {
                 context.sp_RegistrarError(mensaje, fechaHora, origen, idUsuario);

@@ -8,10 +8,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace KN_WEB.Controllers
 {
@@ -49,7 +46,7 @@ namespace KN_WEB.Controllers
 
         [HttpGet]
         public ActionResult RegistrarLibros()
-        {       
+        {
             return View();
         }
 
