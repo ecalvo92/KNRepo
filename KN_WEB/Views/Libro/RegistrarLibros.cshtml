@@ -1,13 +1,154 @@
-﻿@model KN_WEB.Models.Libro
+﻿@model KN_WEB.Models.LibroApi
 
-<h2>RegistrarLibros</h2>
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Registrar libro</h1>
+        <p class="page-subtitle">Consulta un libro en el API o completa los datos para registrarlo</p>
+    </div>
+    <a href="@Url.Action("ConsultarLibros", "Libro")" class="btn-date-picker text-decoration-none">
+        <span>Volver</span>
+    </a>
+</div>
 
-@using (Html.BeginForm("ConsultarLibrosAPI", "Libro", FormMethod.Post, new {  }))
-{ 
-    @Html.TextBoxFor(m => m.Titulo, new { @class = "login-input" })
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Consultar en API</h2>
+    </div>
 
-    <button type="submit" class="btn-login" id="btn-submit">
-        <span>Consultar</span>
-    </button>
+    @using (Html.BeginForm("ConsultarLibrosAPI", "Libro", FormMethod.Post, new { id = "consultarLibroForm" }))
+    {
+        <div class="row g-3 align-items-end">
+            <div class="col-12 col-md">
+                <label class="login-form-label">Título a consultar</label>
+                <div class="login-input-group">
+                    <i class="bi bi-search input-icon"></i>
+                    @Html.TextBox("Titulo", (string)ViewBag.TituloBusqueda, new { @class = "login-input", id = "TituloBusqueda" })
+                </div>
+            </div>
+            <div class="col-12 col-md-auto">
+                <button type="submit" class="btn-dark-custom w-100 justify-content-center">
+                    <span>Consultar</span>
+                </button>
+            </div>
+        </div>
+    }
 
+    @if (ViewBag.Resultados != null)
+    {
+        var resultados = (List<KN_WEB.Models.LibroApi>)ViewBag.Resultados;
+        var tituloBusqueda = (string)ViewBag.TituloBusqueda;
+
+        if (resultados.Count == 0)
+        {
+            <div class="alert alert-warning mt-3 mb-0">No se encontraron libros para la búsqueda @tituloBusqueda</div>
+        }
+        else
+        {
+            <div class="login-form-group mt-3 mb-0">
+                <label class="login-form-label">Resultados (@resultados.Count)</label>
+                <div class="login-input-group">
+                    <i class="bi bi-list-ul input-icon"></i>
+                    <select id="resultadosLibros" class="login-input">
+                        <option value="">Seleccione un libro...</option>
+                        @foreach (var libro in resultados)
+                        {
+                            <option value="@libro.Titulo"
+                                    data-autor="@libro.Autor"
+                                    data-sinopsis="@libro.Sinopsis"
+                                    data-genero="@libro.Genero"
+                                    data-portada="@libro.Portada">
+                                @libro.Titulo - @(string.IsNullOrWhiteSpace(libro.Autor) ? "Autor desconocido" : libro.Autor)
+                            </option>
+                        }
+                    </select>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Datos del libro</h2>
+    </div>
+
+    @using (Html.BeginForm("RegistrarLibros", "Libro", FormMethod.Post, new { id = "registrarLibroForm" }))
+    {
+        if (ViewBag.Message != null)
+        {
+            <div class="alert alert-danger text-center">@ViewBag.Message</div>
+        }
+
+        <div class="row g-3">
+            <div class="col-12 col-md-6">
+                <div class="login-form-group mb-0">
+                    <label class="login-form-label">Título</label>
+                    <div class="login-input-group">
+                        <i class="bi bi-book input-icon"></i>
+                        @Html.TextBoxFor(m => m.Titulo, new { @class = "login-input" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="login-form-group mb-0">
+                    <label class="login-form-label">Autor</label>
+                    <div class="login-input-group">
+                        <i class="bi bi-person input-icon"></i>
+                        @Html.TextBoxFor(m => m.Autor, new { @class = "login-input" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="login-form-group mb-0">
+                    <label class="login-form-label">Sinopsis</label>
+                    <div class="login-input-group">
+                        <i class="bi bi-card-text input-icon"></i>
+                        @Html.TextBoxFor(m => m.Sinopsis, new { @class = "login-input" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="login-form-group mb-0">
+                    <label class="login-form-label">Portada (URL)</label>
+                    <div class="login-input-group">
+                        <i class="bi bi-image input-icon"></i>
+                        @Html.TextBoxFor(m => m.Portada, new { @class = "login-input" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="login-form-group mb-0">
+                    <label class="login-form-label">Género</label>
+                    <div class="login-input-group">
+                        <i class="bi bi-tags input-icon"></i>
+                        @Html.TextBoxFor(m => m.Genero, new { @class = "login-input" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="login-form-group mb-0">
+                    <label class="login-form-label">Precio</label>
+                    <div class="login-input-group">
+                        <i class="bi bi-currency-exchange input-icon"></i>
+                        @Html.TextBoxFor(m => m.Precio, new { @class = "login-input" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn-login" id="btn-submit">
+                    <span>Procesar</span>
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/assets/js/registrarLibros.js"></script>
 }

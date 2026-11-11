@@ -193,7 +193,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Libro.cs" />
     <Compile Include="Models\LibroApi.cs" />
     <Compile Include="Models\UsuarioModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -210,6 +209,7 @@
     <Content Include="assets\js\forgotPassword.js" />
     <Content Include="assets\js\login.js" />
     <Content Include="assets\js\register.js" />
+    <Content Include="assets\js\registrarLibros.js" />
     <Content Include="assets\libs\apexcharts\apexcharts.css" />
     <Content Include="assets\libs\apexcharts\apexcharts.min.js" />
     <Content Include="assets\libs\bootstrap-icons\bootstrap-icons.css" />

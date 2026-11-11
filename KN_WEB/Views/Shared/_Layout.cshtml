@@ -1,6 +1,12 @@
 ﻿@{ 
     var nombreUsuario = Session["NombreUsuario"].ToString() ?? string.Empty;
     var nombreRol = Session["NombreRol"].ToString() ?? string.Empty;
+
+    var partes = nombreUsuario.Split((char[])null, StringSplitOptions.RemoveEmptyEntries);
+    var iniciales = partes.Length > 3 ? $"{partes[0][0]}{partes[2][0]}".ToUpper()
+                  : partes.Length > 1 ? $"{partes[0][0]}{partes[1][0]}".ToUpper()
+                  : partes.Length > 0 ? partes[0][0].ToString().ToUpper()
+                  : string.Empty;
 }
 
 <!DOCTYPE html>
@@ -79,7 +85,7 @@
                 <div class="dropdown ms-2">
                     <button class="navbar-profile-btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false" id="profile-dropdown">
-                        <img src="~/assets/images/avatar.png" alt="Profile Image" class="navbar-profile-img">
+                        <span class="navbar-profile-img table-user-avatar rounded-circle text-white fw-bold d-flex align-items-center justify-content-center">@iniciales</span>
                         <span class="navbar-profile-info d-none d-md-flex flex-column align-items-start text-start">
                             <span class="navbar-profile-name d-block">@nombreUsuario</span>
                             <span class="navbar-profile-role d-block">@nombreRol</span>
@@ -119,7 +125,6 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/libs/apexcharts/apexcharts.min.js"></script>
     <script src="~/assets/libs/flatpickr/flatpickr.min.js"></script>

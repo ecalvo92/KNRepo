@@ -1,6 +1,7 @@
 ﻿using KN_WEB.EF;
 using KN_WEB.Models;
 using KN_WEB.Services;
+using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace KN_WEB.Controllers
     {
         HttpClient http = new HttpClient();
         UserIdService userIdService = new UserIdService();
+
+        #region Consulta de Libros
 
         [HttpGet]
         public ActionResult ConsultarLibros()
@@ -40,19 +43,68 @@ namespace KN_WEB.Controllers
             return View(libros);
         }
 
+        #endregion
+
+        #region Registro de Libros
+
         [HttpGet]
         public ActionResult RegistrarLibros()
-        {
-            //Permitir al Admin registrar los libros que consulte del api            
+        {       
             return View();
         }
 
         [HttpPost]
-        public ActionResult ConsultarLibrosAPI(Libro model)
+        public ActionResult ConsultarLibrosAPI(LibroApi model)
         {
-            var resultado = BuscarLibros(model.Titulo);
+            try
+            {
+                ViewBag.TituloBusqueda = model.Titulo;
+                ViewBag.Resultados = BuscarLibros(model.Titulo);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
+            }
+
+            return View("RegistrarLibros", new LibroApi());
+        }
+
+        [HttpPost]
+        public ActionResult RegistrarLibros(LibroApi model)
+        {
+            try
+            {
+                using (var context = new KN_BDEntities())
+                {
+                    context.tLibro.Add(new tLibro
+                    {
+                        Titulo = model.Titulo,
+                        Autor = model.Autor,
+                        Sinopsis = model.Sinopsis,
+                        Genero = model.Genero,
+                        Portada = model.Portada,
+                        Precio = model.Precio,
+                        Estado = true
+                    });
+                    var response = context.SaveChanges();
+
+                    if (response > 0)
+                        return RedirectToAction("ConsultarLibros", "Libro");
+                }
+
+                ViewBag.Message = "No se registró la información del libro, consulte con el administrador.";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
+            }
+
             return View();
         }
+
+        #endregion
 
         private List<LibroApi> BuscarLibros(string titulo)
         {
@@ -77,7 +129,9 @@ namespace KN_WEB.Controllers
                     Genero = (string)i["volumeInfo"]["categories"]?.FirstOrDefault(),
                     Portada = ((string)i["volumeInfo"]["imageLinks"]?["thumbnail"])?.Replace("http://", "https://")
                 })
-                .Take(10)
+                .DistinctBy(x => new { x.Titulo, x.Autor })
+                .OrderBy(x => x.Titulo)
+                .Take(20)
                 .ToList();
         }
 

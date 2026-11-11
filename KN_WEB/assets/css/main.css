@@ -1879,6 +1879,17 @@ span.flatpickr-weekday {
     color: var(--brand-forest-medium);
 }
 
+.login-error-message {
+    margin-top: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--sys-red);
+}
+
+.login-input.login-input-invalid {
+    border-color: var(--sys-red);
+}
+
 .password-toggle-btn {
     position: absolute;
     right: 1.25rem;
