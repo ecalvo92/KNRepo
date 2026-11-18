@@ -3,6 +3,7 @@ using KN_WEB.Filters;
 using KN_WEB.Models;
 using KN_WEB.Services;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -213,10 +214,82 @@ namespace KN_WEB.Controllers
             return RedirectToAction("Login", "Home");
         }
 
+        private string ClaveCarrito => "CarritoLibros:" + Session["IdUsuario"];
+
+        [HttpGet]
         [ValidarSesion]
         public ActionResult Index()
         {
-            return View();
+            if (Session["IdRol"].ToString() == "2")
+                return RedirectToAction("Monitor", "Admin");
+
+            var catalogo = new CatalogoLibrosModel();
+
+            try
+            {
+                using (var context = new KN_BDEntities())
+                {
+                    catalogo.Libros = context.tLibro.Where(x => x.Estado).OrderBy(x => x.IdLibro).ToList();
+                }
+
+                if (Session[ClaveCarrito] is HashSet<int> seleccion)
+                    catalogo.Carrito = catalogo.Libros.Where(x => seleccion.Contains(x.IdLibro)).ToList();
+            }
+            catch (System.Data.DataException ex)
+            {
+                ViewBag.Message = "No se pudo cargar el catálogo. Inténtalo más tarde.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
+            }
+
+            return View(catalogo);
+        }
+
+        [HttpPost]
+        [ValidarSesion]
+        [ValidateAntiForgeryToken]
+        public ActionResult ActualizarCarrito(int? id, bool quitar = false)
+        {
+            if (Session["IdRol"].ToString() == "2")
+                return RedirectToAction("Monitor", "Admin");
+
+            var urlCarrito = Url.Action("Index", "Home") + "#carrito";
+            if (!ModelState.IsValid || !id.HasValue || id.Value <= 0)
+            {
+                TempData["ErrorCarrito"] = "No se pudo identificar el libro seleccionado.";
+                return Redirect(urlCarrito);
+            }
+
+            var seleccion = Session[ClaveCarrito] as HashSet<int> ?? new HashSet<int>();
+            if (quitar)
+            {
+                seleccion.Remove(id.Value);
+            }
+            else
+            {
+                var idLibro = id.Value;
+                try
+                {
+                    using (var context = new KN_BDEntities())
+                    {
+                        if (!context.tLibro.Any(x => x.IdLibro == idLibro && x.Estado))
+                        {
+                            TempData["ErrorCarrito"] = "Este libro ya no está disponible.";
+                            return Redirect(urlCarrito);
+                        }
+                    }
+                }
+                catch (System.Data.DataException ex)
+                {
+                    TempData["ErrorCarrito"] = "No se pudo agregar el libro. Inténtalo más tarde.";
+                    userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
+                    return Redirect(urlCarrito);
+                }
+
+                seleccion.Add(idLibro);
+            }
+
+            Session[ClaveCarrito] = seleccion;
+            return Redirect(urlCarrito);
         }
 
     }
