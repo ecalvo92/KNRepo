@@ -36,27 +36,43 @@
         </a>
 
         <div class="flex-grow-1 overflow-y-auto">
-            <div class="sidebar-menu-section">
-                <ul class="sidebar-menu-list">
-                    <li class="sidebar-menu-item">
-                        <a href="" class="sidebar-menu-link" id="menu-overview" title="Overview">
-                            <i class="bi bi-grid-fill"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
 
             @if (idRol == "2")
             {
-                <ul class="sidebar-menu-list">
-                    <li class="sidebar-menu-item">
-                        <a href="@Url.Action("ConsultarLibros","Libro")" class="sidebar-menu-link" id="menu-basictables" title="Basic Tables">
-                            <i class="bi bi-book"></i>
-                            <span>Libros</span>
-                        </a>
-                    </li>
-                </ul>
+                <div class="sidebar-menu-section">
+                    <ul class="sidebar-menu-list">
+                        <li class="sidebar-menu-item">
+                            <a href="@Url.Action("Monitor", "Admin")" class="sidebar-menu-link" id="menu-overview" title="Overview">
+                                <i class="bi bi-grid-fill"></i>
+                                <span>Monitor</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-menu-section">
+                    <ul class="sidebar-menu-list">
+                        <li class="sidebar-menu-item">
+                            <a href="@Url.Action("ConsultarLibros", "Libro")" class="sidebar-menu-link" id="menu-basictables" title="Basic Tables">
+                                <i class="bi bi-book"></i>
+                                <span>Libros</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <div class="sidebar-menu-section">
+                    <ul class="sidebar-menu-list">
+                        <li class="sidebar-menu-item">
+                            <a href="@Url.Action("MisLibros", "Libros")" class="sidebar-menu-link" id="menu-overview" title="Overview">
+                                <i class="bi bi-grid-fill"></i>
+                                <span>Mis Libros</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             }
 
         </div>
@@ -77,10 +93,7 @@
             </div>
 
             <div class="navbar-search-wrapper">
-                <input type="text" class="navbar-search-input" placeholder="..." id="main-search">
-                <button class="navbar-search-btn" aria-label="Search">
-                    <i class="bi bi-search"></i>
-                </button>
+
             </div>
 
             <div class="navbar-actions">

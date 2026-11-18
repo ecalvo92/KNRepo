@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace KN_WEB.Controllers
 {
@@ -20,6 +19,7 @@ namespace KN_WEB.Controllers
         [HttpGet]
         public ActionResult ConsultarLibros()
         {
+            //Consultar los libros para un usuario administrador
             var libros = new List<tLibro>();
 
             try
