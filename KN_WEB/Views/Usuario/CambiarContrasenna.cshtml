@@ -1,0 +1,54 @@
+﻿@model KN_WEB.Models.UsuarioModel
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Cambiar contraseña</h1>
+        <p class="page-subtitle">Escribe tu nueva contraseña y vuelve a ingresarla para confirmarla.</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Datos de la contraseña</h2>
+    </div>
+
+    @using (Html.BeginForm("CambiarContrasenna", "Usuario", FormMethod.Post, new { id = "cambiarContrasennaForm" }))
+    {
+        if (ViewBag.Message != null)
+        {
+            <div class="alert alert-danger text-center">@ViewBag.Message</div>
+        }
+
+        <div class="row g-3">
+            <div class="col-12 col-md-6">
+                <div class="login-form-group mb-0">
+                    @Html.LabelFor(m => m.Contrasenna, "Nueva contraseña", new { @class = "login-form-label" })
+                    <div class="login-input-group">
+                        <i class="bi bi-lock input-icon" aria-hidden="true"></i>
+                        @Html.PasswordFor(m => m.Contrasenna, new { @class = "login-input", autocomplete = "new-password", required = "required" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="login-form-group mb-0">
+                    @Html.LabelFor(m => m.ConfirmarContrasenna, "Confirmar contraseña", new { @class = "login-form-label" })
+                    <div class="login-input-group">
+                        <i class="bi bi-shield-lock input-icon" aria-hidden="true"></i>
+                        @Html.PasswordFor(m => m.ConfirmarContrasenna, new { @class = "login-input", autocomplete = "new-password", required = "required" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 d-flex flex-wrap justify-content-end align-items-center gap-2">
+                <button type="submit" class="btn-login w-auto px-5">
+                    <span>Guardar contraseña</span>
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/assets/js/cambiarContrasenna.js"></script>
+}

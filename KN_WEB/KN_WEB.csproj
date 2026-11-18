@@ -161,6 +161,7 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LibroController.cs" />
+    <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="EF\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -207,6 +208,7 @@
     <Content Include="assets\images\favicon.ico" />
     <Content Include="assets\js\actualizarLibros.js" />
     <Content Include="assets\js\auth.js" />
+    <Content Include="assets\js\cambiarContrasenna.js" />
     <Content Include="assets\js\catalogoLibros.js" />
     <Content Include="assets\js\changePassword.js" />
     <Content Include="assets\js\consultarLibros.js" />
@@ -271,6 +273,7 @@
     <Content Include="Views\Libro\RegistrarLibros.cshtml" />
     <Content Include="Views\Libro\ActualizarLibros.cshtml" />
     <Content Include="Views\Admin\Monitor.cshtml" />
+    <Content Include="Views\Usuario\CambiarContrasenna.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

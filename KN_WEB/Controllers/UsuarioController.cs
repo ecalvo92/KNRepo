@@ -1,0 +1,55 @@
+﻿using KN_WEB.EF;
+using KN_WEB.Filters;
+using KN_WEB.Models;
+using KN_WEB.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+
+namespace KN_WEB.Controllers
+{
+    [ValidarSesion]
+    public class UsuarioController : Controller
+    {
+        UserIdService userIdService = new UserIdService();
+
+        [HttpGet]
+        public ActionResult CambiarContrasenna()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CambiarContrasenna(UsuarioModel model)
+        {
+            try
+            {
+                var idUsuario = int.Parse(Session["IdUsuario"].ToString());
+                ViewBag.Message = "No se actualizó su información, consulte con el administrador.";
+
+                using (var context = new KN_BDEntities())
+                {
+                    var response = context.tUsuario.Where(x => x.IdUsuario == idUsuario).FirstOrDefault();
+
+                    if (response != null)
+                    {
+                        response.Contrasenna = model.Contrasenna;
+                        var updateResponse = context.SaveChanges();
+
+                        if (updateResponse > 0)
+                            ViewBag.Message = "Su información se actualizó correctamente.";
+                    }
+                }                
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Se presentó un error, consulte con el administrador.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
+            }
+
+            return View();
+        }
+    }
+}
