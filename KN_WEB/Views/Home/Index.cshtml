@@ -1,11 +1,116 @@
-﻿<div class="page-header">
-    <div>
-        <h1 class="page-title">Blank Page</h1>
-    </div>
-</div>
+﻿@using System.Collections.Generic
+@using System.Linq
 
-<div class="card p-4 border-light shadow-sm text-center">
-    <div>
+@model KN_WEB.Models.CatalogoLibrosModel
+@{
+    var idsEnCarrito = new HashSet<int>(Model.Carrito.Select(libro => libro.IdLibro));
+    var errorCarrito = TempData["ErrorCarrito"] as string;
+}
 
-    </div>
-</div>
+<main class="catalogo-libros" id="catalogo-libros">
+
+    @if (ViewBag.Message != null)
+    {
+        <p class="alert alert-danger mt-3" role="alert">@ViewBag.Message</p>
+    }
+    else if (Model.Libros.Count == 0)
+    {
+        <p class="catalogo-vacio">Por el momento no hay libros disponibles.</p>
+    }
+    else
+    {
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="catalogo-buscador">
+                <input id="catalogo-busqueda" type="search" class="navbar-search-input" placeholder="Título, autor o género" />
+                <p id="catalogo-estado" class="visually-hidden" role="status"></p>
+            </div>
+
+            <a class="btn catalogo-carrito-enlace" href="#carrito">
+                <i class="bi bi-bag" aria-hidden="true"></i> Ver carrito (@Model.Carrito.Count)
+            </a>
+        </div>
+
+        <div class="catalogo-rejilla">
+            @foreach (var libro in Model.Libros)
+            {
+                <article class="catalogo-tarjeta" data-busqueda="@libro.Titulo @libro.Autor @libro.Genero">
+                    <div class="catalogo-portada" aria-hidden="true">
+                        <i class="bi bi-book" aria-hidden="true"></i>
+                        @if (!string.IsNullOrWhiteSpace(libro.Portada))
+                        {
+                            <img src="@libro.Portada" alt="" loading="lazy" width="140" height="196" />
+                        }
+                    </div>
+                    <div class="catalogo-tarjeta-cuerpo">
+                        @if (!string.IsNullOrWhiteSpace(libro.Genero))
+                        {
+                            <p class="catalogo-genero">@libro.Genero</p>
+                        }
+                        <h2>@libro.Titulo</h2>
+                        <p class="catalogo-autor">@libro.Autor</p>
+                        <div class="catalogo-tarjeta-acciones">
+                            <p class="catalogo-precio"><span class="visually-hidden">Precio: </span>@libro.Precio.ToString("N2")</p>
+                            @if (idsEnCarrito.Contains(libro.IdLibro))
+                            {
+                                <a class="btn btn-outline-success w-100" href="#carrito" aria-label="Ver @libro.Titulo en el carrito">
+                                    <i class="bi bi-check2" aria-hidden="true"></i> En el carrito
+                                </a>
+                            }
+                            else
+                            {
+                                using (Html.BeginForm("ActualizarCarrito", "Home", new { id = libro.IdLibro }, FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn catalogo-boton w-100" aria-label="Agregar al carrito: @libro.Titulo">
+                                        <i class="bi bi-bag-plus" aria-hidden="true"></i> Agregar al carrito
+                                    </button>
+                                }
+                            }
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+        <p id="catalogo-sin-resultados" class="catalogo-vacio" hidden>No encontramos libros con esa búsqueda.</p>
+    }
+
+    <section class="catalogo-resumen" id="carrito" tabindex="-1" aria-labelledby="carrito-titulo">
+        <h2 id="carrito-titulo">Tu carrito</h2>
+        @if (errorCarrito != null)
+        {
+            <p class="alert alert-warning" role="alert">@errorCarrito</p>
+        }
+        @if (ViewBag.Message != null)
+        {
+            <p>No se pudo consultar tu selección.</p>
+        }
+        else if (Model.Carrito.Count == 0)
+        {
+            <p>Tu carrito está vacío.</p>
+        }
+        else
+        {
+            <ul class="list-unstyled mb-3">
+                @foreach (var libro in Model.Carrito)
+                {
+                    <li class="catalogo-carrito-item">
+                        <span class="fw-semibold">@libro.Titulo</span>
+                        <span>@libro.Precio.ToString("N2")</span>
+                        @using (Html.BeginForm("ActualizarCarrito", "Home", new { id = libro.IdLibro }, FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="quitar" value="true" />
+                            <button type="submit" class="btn btn-sm btn-outline-secondary" aria-label="Quitar @libro.Titulo del carrito">Quitar</button>
+                        }
+                    </li>
+                }
+            </ul>
+            <p class="catalogo-precio">Total: @Model.TotalCarrito.ToString("N2")</p>
+        }
+        <p class="text-body-secondary mb-0">Por ahora no se pueden finalizar compras en línea.</p>
+    </section>
+</main>
+
+@section Scripts {
+    <script src="~/assets/js/catalogoLibros.js"></script>
+}
