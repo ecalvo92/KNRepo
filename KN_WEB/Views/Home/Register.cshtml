@@ -28,7 +28,8 @@
                 <label class="login-form-label">Identificación</label>
                 <div class="login-input-group">
                     <i class="bi bi-person-badge input-icon"></i>
-                    @Html.TextBoxFor(m => m.Identificacion, new { @class = "login-input" })
+                    @Html.TextBoxFor(m => m.Identificacion, new { @class = "login-input", 
+                   @onkeyup = "ConsultarNombre()" })
                 </div>
             </div>
 
@@ -36,7 +37,7 @@
                 <label class="login-form-label">Nombre Completo</label>
                 <div class="login-input-group">
                     <i class="bi bi-person input-icon"></i>
-                    @Html.TextBoxFor(m => m.NombreCompleto, new { @class = "login-input" })
+                    @Html.TextBoxFor(m => m.NombreCompleto, new { @class = "login-input", @readonly="true" })
                 </div>
             </div>
 
