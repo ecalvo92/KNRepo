@@ -1,4 +1,5 @@
 ﻿using KN_WEB.EF;
+using KN_WEB.Filters;
 using KN_WEB.Models;
 using KN_WEB.Services;
 using System;
@@ -205,12 +206,14 @@ namespace KN_WEB.Controllers
 
         #endregion
 
+        [ValidarSesion]
         public ActionResult CerrarSesion()
         {
             Session.Clear();
             return RedirectToAction("Login", "Home");
         }
 
+        [ValidarSesion]
         public ActionResult Index()
         {
             return View();

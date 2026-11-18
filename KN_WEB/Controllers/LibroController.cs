@@ -1,4 +1,5 @@
 ﻿using KN_WEB.EF;
+using KN_WEB.Filters;
 using KN_WEB.Models;
 using KN_WEB.Services;
 using System;
@@ -9,6 +10,7 @@ using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace KN_WEB.Controllers
 {
+    [ValidarAdmin]
     public class LibroController : Controller
     {
         UserIdService userIdService = new UserIdService();
