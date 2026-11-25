@@ -19,7 +19,7 @@
     {
         if (ViewBag.Message != null)
         {
-            <div class="alert alert-danger text-center">@ViewBag.Message</div>
+            <div class="alert @(ViewBag.Success == true ? "alert-success" : "alert-danger") text-center">@ViewBag.Message</div>
         }
 
         @Html.HiddenFor(m => m.IdLibro, new { @class = "login-input" })

@@ -1,0 +1,64 @@
+﻿@model KN_WEB.Models.UsuarioModel
+
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Cambiar datos personales</h1>
+        <p class="page-subtitle">Actualiza tus datos personales.</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">Datos personales</h2>
+    </div>
+
+    @using (Html.BeginForm("CambiarDatosPersonales", "Usuario", FormMethod.Post, new { id = "cambiarDatosPersonalesForm" }))
+    {
+        if (ViewBag.Message != null)
+        {
+            <div class="alert @(ViewBag.Success == true ? "alert-success" : "alert-danger") text-center">@ViewBag.Message</div>
+        }
+
+        <div class="row g-3">
+            <div class="col-12 col-md-6">
+                <div class="login-form-group mb-0">
+                    @Html.LabelFor(m => m.Identificacion, "Identificación", new { @class = "login-form-label" })
+                    <div class="login-input-group">
+                        <i class="bi bi-person-badge input-icon" aria-hidden="true"></i>
+                        @Html.TextBoxFor(m => m.Identificacion, new { @class = "login-input", @onkeyup = "ConsultarNombre()" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="login-form-group mb-0">
+                    @Html.LabelFor(m => m.NombreCompleto, "Nombre completo", new { @class = "login-form-label" })
+                    <div class="login-input-group">
+                        <i class="bi bi-person input-icon" aria-hidden="true"></i>
+                        @Html.TextBoxFor(m => m.NombreCompleto, new { @class = "login-input", @readonly = "true" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6">
+                <div class="login-form-group mb-0">
+                    @Html.LabelFor(m => m.CorreoElectronico, "Correo electrónico", new { @class = "login-form-label" })
+                    <div class="login-input-group">
+                        <i class="bi bi-envelope input-icon" aria-hidden="true"></i>
+                        @Html.TextBoxFor(m => m.CorreoElectronico, new { @class = "login-input" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 d-flex flex-wrap justify-content-end align-items-center gap-2">
+                <button type="submit" class="btn-login w-auto px-5">
+                    <span>Guardar datos</span>
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/assets/js/cambiarDatosPersonales.js"></script>
+}

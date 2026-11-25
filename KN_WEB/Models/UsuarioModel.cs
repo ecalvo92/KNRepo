@@ -4,6 +4,7 @@
     public class UsuarioModel
     {
         //Atributos, Propiedades, Campos
+        public int IdUsuario { get; set; }
         public string CorreoElectronico { get; set; }
         public string Contrasenna { get; set; }
         public string NombreCompleto { get; set; }
