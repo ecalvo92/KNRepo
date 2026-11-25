@@ -229,7 +229,7 @@ namespace KN_WEB.Controllers
             {
                 using (var context = new KN_BDEntities())
                 {
-                    catalogo.Libros = context.tLibro.Where(x => x.Estado).OrderBy(x => x.IdLibro).ToList();
+                    catalogo.Libros = context.tLibro.Where(x => x.Estado && x.Inventario > 0).OrderBy(x => x.IdLibro).ToList();
                 }
 
                 if (Session[ClaveCarrito] is HashSet<int> seleccion)

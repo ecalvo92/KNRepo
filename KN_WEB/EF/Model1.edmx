@@ -4,7 +4,17 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="KN_BDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="KN_BDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tCarrito">
+          <Key>
+            <PropertyRef Name="IdCarrito" />
+          </Key>
+          <Property Name="IdCarrito" Type="int" Nullable="false" />
+          <Property Name="IdLibro" Type="int" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" Nullable="false" />
+          <Property Name="FechaCarrito" Type="datetime" Nullable="false" />
+          <Property Name="CantidadCarrito" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="tError">
           <Key>
             <PropertyRef Name="IdError" />
@@ -27,6 +37,7 @@
           <Property Name="Genero" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Precio" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="Estado" Type="bit" Nullable="false" />
+          <Property Name="Inventario" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="tRol">
           <Key>
@@ -47,6 +58,30 @@
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="IdRol" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_tCarrito_tLibro">
+          <End Role="tLibro" Type="Self.tLibro" Multiplicity="1" />
+          <End Role="tCarrito" Type="Self.tCarrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tLibro">
+              <PropertyRef Name="IdLibro" />
+            </Principal>
+            <Dependent Role="tCarrito">
+              <PropertyRef Name="IdLibro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tCarrito_tUsuario">
+          <End Role="tUsuario" Type="Self.tUsuario" Multiplicity="1" />
+          <End Role="tCarrito" Type="Self.tCarrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tUsuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="tCarrito">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tUsuario_tRol">
           <End Role="tRol" Type="Self.tRol" Multiplicity="1" />
           <End Role="tUsuario" Type="Self.tUsuario" Multiplicity="*" />
@@ -76,17 +111,25 @@
           <Parameter Name="Contrasenna" Type="nvarchar" Mode="In" />
         </Function>
         <EntityContainer Name="KN_BDModelStoreContainer">
+          <EntitySet Name="tCarrito" EntityType="Self.tCarrito" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tError" EntityType="Self.tError" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tLibro" EntityType="Self.tLibro" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tRol" EntityType="Self.tRol" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tUsuario" EntityType="Self.tUsuario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tCarrito_tLibro" Association="Self.FK_tCarrito_tLibro">
+            <End Role="tLibro" EntitySet="tLibro" />
+            <End Role="tCarrito" EntitySet="tCarrito" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tCarrito_tUsuario" Association="Self.FK_tCarrito_tUsuario">
+            <End Role="tUsuario" EntitySet="tUsuario" />
+            <End Role="tCarrito" EntitySet="tCarrito" />
+          </AssociationSet>
           <AssociationSet Name="FK_tUsuario_tRol" Association="Self.FK_tUsuario_tRol">
             <End Role="tRol" EntitySet="tRol" />
             <End Role="tUsuario" EntitySet="tUsuario" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="KN_BDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -112,6 +155,8 @@
           <Property Name="Genero" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Precio" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="Estado" Type="Boolean" Nullable="false" />
+          <Property Name="Inventario" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tCarrito" Relationship="KN_BDModel.FK_tCarrito_tLibro" FromRole="tLibro" ToRole="tCarrito" />
         </EntityType>
         <EntityType Name="tRol">
           <Key>
@@ -133,6 +178,7 @@
           <Property Name="Estado" Type="Boolean" Nullable="false" />
           <Property Name="IdRol" Type="Int32" Nullable="false" />
           <NavigationProperty Name="tRol" Relationship="Self.FK_tUsuario_tRol" FromRole="tUsuario" ToRole="tRol" />
+          <NavigationProperty Name="tCarrito" Relationship="KN_BDModel.FK_tCarrito_tUsuario" FromRole="tUsuario" ToRole="tCarrito" />
         </EntityType>
         <Association Name="FK_tUsuario_tRol">
           <End Role="tRol" Type="Self.tRol" Multiplicity="1" />
@@ -171,6 +217,15 @@
             <Parameter Name="CorreoElectronico" Mode="In" Type="String" />
             <Parameter Name="Contrasenna" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="tCarrito" EntityType="KN_BDModel.tCarrito" />
+          <AssociationSet Name="FK_tCarrito_tLibro" Association="KN_BDModel.FK_tCarrito_tLibro">
+            <End Role="tLibro" EntitySet="tLibro" />
+            <End Role="tCarrito" EntitySet="tCarrito" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tCarrito_tUsuario" Association="KN_BDModel.FK_tCarrito_tUsuario">
+            <End Role="tUsuario" EntitySet="tUsuario" />
+            <End Role="tCarrito" EntitySet="tCarrito" />
+          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_IniciarSesionUsuario_Result">
           <Property Type="Int32" Name="IdUsuario" Nullable="false" />
@@ -182,6 +237,42 @@
           <Property Type="Int32" Name="IdRol" Nullable="false" />
           <Property Type="String" Name="NombreRol" Nullable="false" MaxLength="100" />
         </ComplexType>
+        <EntityType Name="tCarrito">
+          <Key>
+            <PropertyRef Name="IdCarrito" />
+          </Key>
+          <Property Name="IdCarrito" Type="Int32" Nullable="false" />
+          <Property Name="IdLibro" Type="Int32" Nullable="false" />
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" />
+          <Property Name="FechaCarrito" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CantidadCarrito" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tLibro" Relationship="KN_BDModel.FK_tCarrito_tLibro" FromRole="tCarrito" ToRole="tLibro" />
+          <NavigationProperty Name="tUsuario" Relationship="KN_BDModel.FK_tCarrito_tUsuario" FromRole="tCarrito" ToRole="tUsuario" />
+        </EntityType>
+        <Association Name="FK_tCarrito_tLibro">
+          <End Type="KN_BDModel.tLibro" Role="tLibro" Multiplicity="1" />
+          <End Type="KN_BDModel.tCarrito" Role="tCarrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tLibro">
+              <PropertyRef Name="IdLibro" />
+            </Principal>
+            <Dependent Role="tCarrito">
+              <PropertyRef Name="IdLibro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tCarrito_tUsuario">
+          <End Type="KN_BDModel.tUsuario" Role="tUsuario" Multiplicity="1" />
+          <End Type="KN_BDModel.tCarrito" Role="tCarrito" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tUsuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="tCarrito">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -202,6 +293,7 @@
           <EntitySetMapping Name="tLibro">
             <EntityTypeMapping TypeName="KN_BDModel.tLibro">
               <MappingFragment StoreEntitySet="tLibro">
+                <ScalarProperty Name="Inventario" ColumnName="Inventario" />
                 <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
                 <ScalarProperty Name="Titulo" ColumnName="Titulo" />
                 <ScalarProperty Name="Autor" ColumnName="Autor" />
@@ -250,6 +342,17 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_RegistrarError" FunctionName="KN_BDModel.Store.sp_RegistrarError" />
           <FunctionImportMapping FunctionImportName="sp_RegistrarUsuario" FunctionName="KN_BDModel.Store.sp_RegistrarUsuario" />
+          <EntitySetMapping Name="tCarrito">
+            <EntityTypeMapping TypeName="KN_BDModel.tCarrito">
+              <MappingFragment StoreEntitySet="tCarrito">
+                <ScalarProperty Name="CantidadCarrito" ColumnName="CantidadCarrito" />
+                <ScalarProperty Name="FechaCarrito" ColumnName="FechaCarrito" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="IdLibro" ColumnName="IdLibro" />
+                <ScalarProperty Name="IdCarrito" ColumnName="IdCarrito" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

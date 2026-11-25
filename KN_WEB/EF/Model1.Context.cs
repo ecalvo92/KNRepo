@@ -31,6 +31,7 @@ namespace KN_WEB.EF
         public virtual DbSet<tLibro> tLibro { get; set; }
         public virtual DbSet<tRol> tRol { get; set; }
         public virtual DbSet<tUsuario> tUsuario { get; set; }
+        public virtual DbSet<tCarrito> tCarrito { get; set; }
     
         public virtual ObjectResult<sp_IniciarSesionUsuario_Result> sp_IniciarSesionUsuario(string correoElectronico, string contrasenna)
         {

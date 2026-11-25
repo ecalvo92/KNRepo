@@ -46,9 +46,12 @@
                         {
                             <p class="catalogo-genero">@libro.Genero</p>
                         }
+                        
                         <h2>@libro.Titulo</h2>
                         <p class="catalogo-autor">@libro.Autor</p>
+                        
                         <div class="catalogo-tarjeta-acciones">
+                            <p class="text-body-secondary small mb-2">Disponibles: @libro.Inventario</p>
                             <p class="catalogo-precio"><span class="visually-hidden">Precio: </span>@libro.Precio.ToString("N2")</p>
                             @if (idsEnCarrito.Contains(libro.IdLibro))
                             {

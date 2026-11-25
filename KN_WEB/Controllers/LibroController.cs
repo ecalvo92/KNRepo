@@ -80,7 +80,8 @@ namespace KN_WEB.Controllers
                         Genero = model.Genero,
                         Portada = model.Portada,
                         Precio = model.Precio,
-                        Estado = true
+                        Estado = true,
+                        Inventario = model.Inventario
                     });
                     var response = context.SaveChanges();
 
@@ -121,6 +122,7 @@ namespace KN_WEB.Controllers
                     libro.Portada = response.Portada;
                     libro.Genero = response.Genero;
                     libro.Precio = response.Precio;
+                    libro.Inventario = response.Inventario;
                 }
             }
             catch (Exception ex)
@@ -149,6 +151,7 @@ namespace KN_WEB.Controllers
                         response.Portada = model.Portada;
                         response.Genero = model.Genero;
                         response.Precio = model.Precio;
+                        response.Inventario = model.Inventario;
                         var updateResponse = context.SaveChanges();
 
                         if (updateResponse > 0)

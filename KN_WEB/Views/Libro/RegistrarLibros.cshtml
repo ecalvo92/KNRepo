@@ -80,73 +80,83 @@
             <div class="alert @(ViewBag.Success == true ? "alert-success" : "alert-danger") text-center">@ViewBag.Message</div>
         }
 
-        <div class="row g-3">
-            <div class="col-12 col-md-6">
-                <div class="login-form-group mb-0">
-                    <label class="login-form-label">Título</label>
-                    <div class="login-input-group">
-                        <i class="bi bi-book input-icon"></i>
-                        @Html.TextBoxFor(m => m.Titulo, new { @class = "login-input" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-6">
-                <div class="login-form-group mb-0">
-                    <label class="login-form-label">Autor</label>
-                    <div class="login-input-group">
-                        <i class="bi bi-person input-icon"></i>
-                        @Html.TextBoxFor(m => m.Autor, new { @class = "login-input" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12">
-                <div class="login-form-group mb-0">
-                    <label class="login-form-label">Sinopsis</label>
-                    <div class="login-input-group">
-                        <i class="bi bi-card-text input-icon"></i>
-                        @Html.TextBoxFor(m => m.Sinopsis, new { @class = "login-input" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12">
-                <div class="login-form-group mb-0">
-                    <label class="login-form-label">Portada (URL)</label>
-                    <div class="login-input-group">
-                        <i class="bi bi-image input-icon"></i>
-                        @Html.TextBoxFor(m => m.Portada, new { @class = "login-input" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-6">
-                <div class="login-form-group mb-0">
-                    <label class="login-form-label">Género</label>
-                    <div class="login-input-group">
-                        <i class="bi bi-tags input-icon"></i>
-                        @Html.TextBoxFor(m => m.Genero, new { @class = "login-input" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-6">
-                <div class="login-form-group mb-0">
-                    <label class="login-form-label">Precio</label>
-                    <div class="login-input-group">
-                        <i class="bi bi-currency-exchange input-icon"></i>
-                        @Html.TextBoxFor(m => m.Precio, new { @class = "login-input" })
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 d-flex justify-content-end">
-                <button type="submit" class="btn-login w-auto px-5" id="btn-submit">
-                    <span>Procesar</span>
-                </button>
+<div class="row g-3">
+    <div class="col-12 col-md-6">
+        <div class="login-form-group mb-0">
+            <label class="login-form-label">Título</label>
+            <div class="login-input-group">
+                <i class="bi bi-book input-icon"></i>
+                @Html.TextBoxFor(m => m.Titulo, new { @class = "login-input" })
             </div>
         </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+        <div class="login-form-group mb-0">
+            <label class="login-form-label">Autor</label>
+            <div class="login-input-group">
+                <i class="bi bi-person input-icon"></i>
+                @Html.TextBoxFor(m => m.Autor, new { @class = "login-input" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="login-form-group mb-0">
+            <label class="login-form-label">Sinopsis</label>
+            <div class="login-input-group">
+                <i class="bi bi-card-text input-icon"></i>
+                @Html.TextBoxFor(m => m.Sinopsis, new { @class = "login-input" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="login-form-group mb-0">
+            <label class="login-form-label">Portada (URL)</label>
+            <div class="login-input-group">
+                <i class="bi bi-image input-icon"></i>
+                @Html.TextBoxFor(m => m.Portada, new { @class = "login-input" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <div class="login-form-group mb-0">
+            <label class="login-form-label">Género</label>
+            <div class="login-input-group">
+                <i class="bi bi-tags input-icon"></i>
+                @Html.TextBoxFor(m => m.Genero, new { @class = "login-input" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <div class="login-form-group mb-0">
+            <label class="login-form-label">Precio</label>
+            <div class="login-input-group">
+                <i class="bi bi-currency-exchange input-icon"></i>
+                @Html.TextBoxFor(m => m.Precio, new { @class = "login-input" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+        <div class="login-form-group mb-0">
+            <label class="login-form-label">Inventario</label>
+            <div class="login-input-group">
+                <i class="bi bi-currency-exchange input-icon"></i>
+                @Html.TextBoxFor(m => m.Inventario, new { @class = "login-input" })
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 d-flex justify-content-end">
+        <button type="submit" class="btn-login w-auto px-5" id="btn-submit">
+            <span>Procesar</span>
+        </button>
+    </div>
+</div>
     }
 </div>
 

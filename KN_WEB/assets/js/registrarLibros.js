@@ -28,7 +28,8 @@ $(function () {
             Sinopsis: { required: true},
             Genero: { required: true },
             Portada: { required: true },
-            Precio: { required: true, number: true, min: 1 }
+            Precio: { required: true, number: true, min: 1 },
+            Inventario: { required: true, number: true, min: 0 }
         },
         messages: {
             Titulo: { required: 'El título es obligatorio' },
@@ -37,6 +38,7 @@ $(function () {
             Genero: { required: 'El Género es obligatorio' },
             Portada: { required: 'La Portada es obligatoria' },
             Precio: { required: 'El Precio es obligatorio', number: 'Ingrese un precio válido', min: 'El precio debe ser mayor a 0' },
+            Inventario: { required: 'El Inventario es obligatorio', number: 'Ingrese un inventario válido', min: 'El inventario debe ser mayor o igual a 0' },
         },
         errorElement: 'div',
         errorClass: 'login-error-message',

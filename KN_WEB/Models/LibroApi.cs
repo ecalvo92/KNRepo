@@ -10,5 +10,6 @@
         public string Genero { get; set; }
         public decimal Precio { get; set; }
         public bool Estado { get; set; }
+        public int Inventario { get; set; }
     }
 }
