@@ -214,8 +214,6 @@ namespace KN_WEB.Controllers
             return RedirectToAction("Login", "Home");
         }
 
-        private string ClaveCarrito => "CarritoLibros:" + Session["IdUsuario"];
-
         [HttpGet]
         [ValidarSesion]
         public ActionResult Index()
@@ -224,16 +222,18 @@ namespace KN_WEB.Controllers
                 return RedirectToAction("Monitor", "Admin");
 
             var catalogo = new CatalogoLibrosModel();
+            var idUsuario = int.Parse(Session["IdUsuario"].ToString());
 
             try
             {
                 using (var context = new KN_BDEntities())
                 {
                     catalogo.Libros = context.tLibro.Where(x => x.Estado && x.Inventario > 0).OrderBy(x => x.IdLibro).ToList();
-                }
 
-                if (Session[ClaveCarrito] is HashSet<int> seleccion)
-                    catalogo.Carrito = catalogo.Libros.Where(x => seleccion.Contains(x.IdLibro)).ToList();
+                    catalogo.Carrito = context.tCarrito.Where(x => x.IdUsuario == idUsuario)
+                        .Select(x => x.tLibro)
+                        .ToList();
+                }   
             }
             catch (System.Data.DataException ex)
             {
@@ -252,45 +252,74 @@ namespace KN_WEB.Controllers
             if (Session["IdRol"].ToString() == "2")
                 return RedirectToAction("Monitor", "Admin");
 
+            var idUsuario = int.Parse(Session["IdUsuario"].ToString());
+            var idLibro = id.Value;
             var urlCarrito = Url.Action("Index", "Home") + "#carrito";
-            if (!ModelState.IsValid || !id.HasValue || id.Value <= 0)
-            {
-                TempData["ErrorCarrito"] = "No se pudo identificar el libro seleccionado.";
-                return Redirect(urlCarrito);
-            }
 
-            var seleccion = Session[ClaveCarrito] as HashSet<int> ?? new HashSet<int>();
-            if (quitar)
+            try
             {
-                seleccion.Remove(id.Value);
-            }
-            else
-            {
-                var idLibro = id.Value;
-                try
+                using (var context = new KN_BDEntities())
                 {
-                    using (var context = new KN_BDEntities())
+                    if (quitar)
                     {
-                        if (!context.tLibro.Any(x => x.IdLibro == idLibro && x.Estado))
+                        var items = context.tCarrito.Where(x => x.IdUsuario == idUsuario && x.IdLibro == idLibro);
+                        context.tCarrito.RemoveRange(items);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        if (!context.tLibro.Any(x => x.IdLibro == idLibro && x.Estado && x.Inventario > 0))
                         {
                             TempData["ErrorCarrito"] = "Este libro ya no está disponible.";
                             return Redirect(urlCarrito);
                         }
+
+                        if (!context.tCarrito.Any(x => x.IdUsuario == idUsuario && x.IdLibro == idLibro))
+                        {
+                            context.tCarrito.Add(new tCarrito
+                            {
+                                IdUsuario = (int)Session["IdUsuario"],
+                                IdLibro = idLibro,
+                                CantidadCarrito = 1,
+                                FechaCarrito = DateTime.Now
+                            });
+                            context.SaveChanges();
+                        }
                     }
                 }
-                catch (System.Data.DataException ex)
-                {
-                    TempData["ErrorCarrito"] = "No se pudo agregar el libro. Inténtalo más tarde.";
-                    userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
-                    return Redirect(urlCarrito);
-                }
-
-                seleccion.Add(idLibro);
+            }
+            catch (System.Data.DataException ex)
+            {
+                TempData["ErrorCarrito"] = "No se pudo agregar el libro. Inténtalo más tarde.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
             }
 
-            Session[ClaveCarrito] = seleccion;
             return Redirect(urlCarrito);
         }
 
+        [HttpPost]
+        [ValidarSesion]
+        [ValidateAntiForgeryToken]
+        public ActionResult ProcesarPago()
+        {
+            var idUsuario = int.Parse(Session["IdUsuario"].ToString());
+            var urlCarrito = Url.Action("Index", "Home") + "#carrito";
+
+            try
+            {
+                using (var context = new KN_BDEntities())
+                {
+                    context.ProcesarPago(idUsuario);
+                }
+            }
+            catch (System.Data.DataException ex)
+            {
+                TempData["ErrorCarrito"] = "No se pudo agregar el libro. Inténtalo más tarde.";
+                userIdService.RegistrarError(ex.Message, RouteData.Values["controller"] + " - " + RouteData.Values["action"]);
+            }
+
+            return Redirect(urlCarrito);
+        }
+        
     }
 }

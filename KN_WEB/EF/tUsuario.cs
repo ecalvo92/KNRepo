@@ -18,6 +18,7 @@ namespace KN_WEB.EF
         public tUsuario()
         {
             this.tCarrito = new HashSet<tCarrito>();
+            this.tPago = new HashSet<tPago>();
         }
     
         public int IdUsuario { get; set; }
@@ -31,5 +32,7 @@ namespace KN_WEB.EF
         public virtual tRol tRol { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tCarrito> tCarrito { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tPago> tPago { get; set; }
     }
 }

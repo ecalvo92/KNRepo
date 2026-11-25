@@ -46,13 +46,13 @@
                         {
                             <p class="catalogo-genero">@libro.Genero</p>
                         }
-                        
+
                         <h2>@libro.Titulo</h2>
                         <p class="catalogo-autor">@libro.Autor</p>
-                        
+
                         <div class="catalogo-tarjeta-acciones">
                             <p class="text-body-secondary small mb-2">Disponibles: @libro.Inventario</p>
-                            <p class="catalogo-precio"><span class="visually-hidden">Precio: </span>@libro.Precio.ToString("N2")</p>
+                            <p class="catalogo-precio"><span class="visually-hidden">Precio: </span>₡ @libro.Precio.ToString("N2")</p>
                             @if (idsEnCarrito.Contains(libro.IdLibro))
                             {
                                 <a class="btn btn-outline-success w-100" href="#carrito" aria-label="Ver @libro.Titulo en el carrito">
@@ -98,7 +98,7 @@
                 {
                     <li class="catalogo-carrito-item">
                         <span class="fw-semibold">@libro.Titulo</span>
-                        <span>@libro.Precio.ToString("N2")</span>
+                        <span>₡ @libro.Precio.ToString("N2")</span>
                         @using (Html.BeginForm("ActualizarCarrito", "Home", new { id = libro.IdLibro }, FormMethod.Post))
                         {
                             @Html.AntiForgeryToken()
@@ -108,9 +108,18 @@
                     </li>
                 }
             </ul>
-            <p class="catalogo-precio">Total: @Model.TotalCarrito.ToString("N2")</p>
+            <div class="d-flex justify-content-between">
+                <p class="catalogo-precio">Total: ₡ @Model.TotalCarrito.ToString("N2")</p>
+
+                @using (Html.BeginForm("ProcesarPago", "Home"))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="submit" value="Procesar Pago" class="btn btn-dark">
+                }
+
+            </div>
         }
-        <p class="text-body-secondary mb-0">Por ahora no se pueden finalizar compras en línea.</p>
+
     </section>
 </main>
 

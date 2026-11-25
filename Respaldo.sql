@@ -7,6 +7,19 @@ GO
 USE [KN_BD]
 GO
 
+CREATE TABLE [dbo].[tCarrito](
+	[IdCarrito] [int] IDENTITY(1,1) NOT NULL,
+	[IdLibro] [int] NOT NULL,
+	[IdUsuario] [int] NOT NULL,
+	[FechaCarrito] [datetime] NOT NULL,
+	[CantidadCarrito] [int] NOT NULL,
+ CONSTRAINT [PK_tCarrito] PRIMARY KEY CLUSTERED 
+(
+	[IdCarrito] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
 CREATE TABLE [dbo].[tError](
 	[IdError] [bigint] IDENTITY(1,1) NOT NULL,
 	[Descripcion] [varchar](max) NOT NULL,
@@ -29,11 +42,25 @@ CREATE TABLE [dbo].[tLibro](
 	[Genero] [varchar](100) NOT NULL,
 	[Precio] [decimal](10, 2) NOT NULL,
 	[Estado] [bit] NOT NULL,
+	[Inventario] [int] NOT NULL,
  CONSTRAINT [PK_tLibro] PRIMARY KEY CLUSTERED 
 (
 	[IdLibro] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[tPago](
+	[IdPago] [int] IDENTITY(1,1) NOT NULL,
+	[FechaPago] [datetime] NOT NULL,
+	[IdUsuario] [int] NOT NULL,
+	[CantidadPagada] [int] NOT NULL,
+	[TotalPagado] [decimal](18, 2) NOT NULL,
+ CONSTRAINT [PK_tPago] PRIMARY KEY CLUSTERED 
+(
+	[IdPago] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
 GO
 
 CREATE TABLE [dbo].[tRol](
@@ -84,20 +111,39 @@ GO
 INSERT [dbo].[tError] ([IdError], [Descripcion], [FechaHora], [Origen], [IdUsuario]) VALUES (7, N'Value cannot be null.
 Parameter name: stringToEscape', CAST(N'2026-11-10T19:05:44.363' AS DateTime), N'Libro - ConsultarLibrosAPI', 1)
 GO
+INSERT [dbo].[tError] ([IdError], [Descripcion], [FechaHora], [Origen], [IdUsuario]) VALUES (8, N'An error occurred while updating the entries. See the inner exception for details.', CAST(N'2026-11-24T19:31:08.280' AS DateTime), N'Home - ActualizarCarrito', 3)
+GO
 SET IDENTITY_INSERT [dbo].[tError] OFF
 GO
 
 SET IDENTITY_INSERT [dbo].[tLibro] ON 
 GO
-INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado]) VALUES (1, N'Superman on the Couch', N'Danny Fingeroth', N'Why are so many of the superhero myths tied up with loss, often violent, of parents or parental figures? What is the significance of the dual identity? What makes some superhuman figures "good" and others "evil"? Why are so many of the prime superheroes white and male? How has the superhero evolved over the course of the 20th and early 21st centuries? And how might the myths be changing? Why is it that the key superhero archetypes - Superman, Batman, Wonder Woman, Spider-Man, the X-Men - touch primal needs and experiences in everyone? Why has the superhero moved beyond the pages of comics into other media? All these topics, and more, are covered in this lively and original exploration of the reasons why the superhero - in comic books, films, and TV - is such a potent myth for our times and culture.>', N'https://books.google.com/books/content?id=lFIyvSxR_SkC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', N'Comics & Graphic Novels', CAST(12000.00 AS Decimal(10, 2)), 1)
+INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado], [Inventario]) VALUES (1, N'Superman on the Couch', N'Danny Fingeroth', N'Why are so many of the superhero myths tied up with loss, often violent, of parents or parental figures? What is the significance of the dual identity? What makes some superhuman figures "good" and others "evil"? Why are so many of the prime superheroes white and male? How has the superhero evolved over the course of the 20th and early 21st centuries? And how might the myths be changing? Why is it that the key superhero archetypes - Superman, Batman, Wonder Woman, Spider-Man, the X-Men - touch primal needs and experiences in everyone? Why has the superhero moved beyond the pages of comics into other media? All these topics, and more, are covered in this lively and original exploration of the reasons why the superhero - in comic books, films, and TV - is such a potent myth for our times and culture.>', N'https://books.google.com/books/content?id=lFIyvSxR_SkC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', N'Comics & Graphic Novels', CAST(12000.00 AS Decimal(10, 2)), 1, 11)
 GO
-INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado]) VALUES (2, N'Percy Jackson and the Titan''s Curse (Book 3)', N'Rick Riordan J', N'The third book in the bestselling Percy Jackson and the Olympians series. Now with a new cover look! Discover the story behind the Disney+ series. HALF BOY - HALF GOD - ALL HERO. It''s not every day you find yourself in combat with a half-lion, half human. . . Percy Jackson has a lot on his plate. A powerful goddess has gone missing. The Greek gods are on the brink of war with the Titans. And there''s the minor threat of a mystery beast that could destroy Mount Olympus forever. This time, Percy''s going to need help and he''s found two powerful demigods for the job. . .There''s just the small problem of the prophecy. The one that has predicted not all of them will survive. But when you''re the son of a Greek god, it happens. Right?', N'https://tse4.mm.bing.net/th/id/OIP.9O7aQWJkHENJPnTqtwJ-PgHaKi?r=0&rs=1&pid=ImgDetMain&o=7&rm=3', N'Juvenile Fictions', CAST(10000.00 AS Decimal(10, 2)), 1)
+INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado], [Inventario]) VALUES (2, N'Percy Jackson and the Titan''s Curse (Book 3)', N'Rick Riordan J', N'The third book in the bestselling Percy Jackson and the Olympians series. Now with a new cover look! Discover the story behind the Disney+ series. HALF BOY - HALF GOD - ALL HERO. It''s not every day you find yourself in combat with a half-lion, half human. . . Percy Jackson has a lot on his plate. A powerful goddess has gone missing. The Greek gods are on the brink of war with the Titans. And there''s the minor threat of a mystery beast that could destroy Mount Olympus forever. This time, Percy''s going to need help and he''s found two powerful demigods for the job. . .There''s just the small problem of the prophecy. The one that has predicted not all of them will survive. But when you''re the son of a Greek god, it happens. Right?', N'https://tse4.mm.bing.net/th/id/OIP.9O7aQWJkHENJPnTqtwJ-PgHaKi?r=0&rs=1&pid=ImgDetMain&o=7&rm=3', N'Juvenile Fictions', CAST(10000.00 AS Decimal(10, 2)), 1, 0)
 GO
-INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado]) VALUES (3, N'Pirates of the Caribbean, Jack Sparrow', N'Rob Kidd', N'Meet Disney''s Jack Sparrow', N'https://es.web.img3.acsta.net/pictures/14/03/25/11/14/498694.jpg', N'Adventure stories, American', CAST(15000.00 AS Decimal(10, 2)), 1)
+INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado], [Inventario]) VALUES (3, N'Pirates of the Caribbean, Jack Sparrow', N'Rob Kidd', N'Meet Disney''s Jack Sparrow', N'https://es.web.img3.acsta.net/pictures/14/03/25/11/14/498694.jpg', N'Adventure stories, American', CAST(15000.00 AS Decimal(10, 2)), 1, 5)
 GO
-INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado]) VALUES (4, N'Avengers vs. X-Men', N'Jason Aaron', N'Collects: AVX: VS #1-6, A-Babies vs. X-Babies #1. The Avengers vs. X-Men event spills over into the all-action Versus - offering extended, blow-by-blow accounts of fan-favorite matchups, as chronicled by an incredible array of comic-book talent! Unstoppable optic blasts meet immovable shield as Cyclops faces Captain America! It''s the ultimate grudge match as Thing grapples with Namor! Sparks fly as Iron Man clashes with Magneto! Love hurts as Black Panther battles Storm! Thrill to these bouts and more, served up by a titanic tag-team of Marvel''s biggest writers and artists. It''s Avengers vs. X-Men - ''nuff said!', N'https://books.google.com/books/content?id=cbI8AwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', N'Comics & Graphic Novels', CAST(15000.00 AS Decimal(10, 2)), 1)
+INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado], [Inventario]) VALUES (4, N'Avengers vs. X-Men', N'Jason Aaron', N'Collects: AVX: VS #1-6, A-Babies vs. X-Babies #1. The Avengers vs. X-Men event spills over into the all-action Versus - offering extended, blow-by-blow accounts of fan-favorite matchups, as chronicled by an incredible array of comic-book talent! Unstoppable optic blasts meet immovable shield as Cyclops faces Captain America! It''s the ultimate grudge match as Thing grapples with Namor! Sparks fly as Iron Man clashes with Magneto! Love hurts as Black Panther battles Storm! Thrill to these bouts and more, served up by a titanic tag-team of Marvel''s biggest writers and artists. It''s Avengers vs. X-Men - ''nuff said!', N'https://books.google.com/books/content?id=cbI8AwAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', N'Comics & Graphic Novels', CAST(15000.00 AS Decimal(10, 2)), 1, 8)
+GO
+INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado], [Inventario]) VALUES (5, N'El enigma y el espejo', N'Jostein Gaarder', N'El singular encuentro en plenas fiestas navidenas entre Cecilia -una chica aburrida de estar en cama a causa de su enfermedad- y el pequeno Ariel -un enigmatico y curioso angel que desea conocer todo lo relativo a las personas- servira para que Cecilia, en un continuo intercambio de preguntas y respuestas con Ariel, acabe descubriendo, desde su propio cuarto, como es la vida fuera de la Tierra, que son los suenos, la imaginacion y hasta como es posible llegar a volar.Una vez mas, el autor de El mundo de Sofia sabe responder con inteligencia a las preguntas que todos alguna vez nos hicimos e incluso a aquellas que nunca nos habiamos hecho. El enigma y el espejo es, finalmente, un libro distinto, una invitacion a mirar sin miedo al otro lado del espejo.', N'https://books.google.com/books/content?id=-edaSAAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api', N'Literary Collections', CAST(16500.00 AS Decimal(10, 2)), 1, 7)
+GO
+INSERT [dbo].[tLibro] ([IdLibro], [Titulo], [Autor], [Sinopsis], [Portada], [Genero], [Precio], [Estado], [Inventario]) VALUES (6, N'El mundo de Sofía', N'Jostein Gaarder', N'EL LIBRO QUE HA ENSEÑADO A PENSAR A TODA UNA GENERACIÓN Esta extraordinaria obra de divulgación que se ha convertido ya en una obra de culto aporta una coherente visión de conjunto sobre aquellos aspectos imprescindibles para comprender la historia de la filosofía occidental. El mundo de Sofía tiene el mérito de haber conjugado, acertadamente, rigor y amenidad en una narración donde una joven irá conociendo su propia identidad mientras descubre la capacidad humana de hacer preguntas.', N'https://books.google.com/books/content?id=FFsj4Lp9c_AC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api', N'Juvenile Fiction', CAST(13000.00 AS Decimal(10, 2)), 1, 5)
 GO
 SET IDENTITY_INSERT [dbo].[tLibro] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[tPago] ON 
+GO
+INSERT [dbo].[tPago] ([IdPago], [FechaPago], [IdUsuario], [CantidadPagada], [TotalPagado]) VALUES (1, CAST(N'2026-11-24T20:45:29.910' AS DateTime), 3, 3, CAST(37000.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[tPago] ([IdPago], [FechaPago], [IdUsuario], [CantidadPagada], [TotalPagado]) VALUES (2, CAST(N'2026-11-24T20:46:58.167' AS DateTime), 3, 1, CAST(10000.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[tPago] ([IdPago], [FechaPago], [IdUsuario], [CantidadPagada], [TotalPagado]) VALUES (3, CAST(N'2026-11-24T20:47:08.517' AS DateTime), 3, 1, CAST(10000.00 AS Decimal(18, 2)))
+GO
+INSERT [dbo].[tPago] ([IdPago], [FechaPago], [IdUsuario], [CantidadPagada], [TotalPagado]) VALUES (4, CAST(N'2026-11-24T20:47:27.613' AS DateTime), 1, 1, CAST(10000.00 AS Decimal(18, 2)))
+GO
+SET IDENTITY_INSERT [dbo].[tPago] OFF
 GO
 
 SET IDENTITY_INSERT [dbo].[tRol] ON 
@@ -113,9 +159,9 @@ SET IDENTITY_INSERT [dbo].[tUsuario] ON
 GO
 INSERT [dbo].[tUsuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado], [IdRol]) VALUES (1, N'304590415', N'EDUARDO JOSE CALVO CASTILLO', N'ecalvo90415@ufide.ac.cr', N'90415', 1, 1)
 GO
-INSERT [dbo].[tUsuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado], [IdRol]) VALUES (2, N'120060050', N'ALEJANDRO GABRIEL ARROYO MATAMOROS', N'aarroyo60050@ufide.ac.cr', N'60050**', 1, 2)
+INSERT [dbo].[tUsuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado], [IdRol]) VALUES (2, N'120060050', N'ALEJANDRO GABRIEL ARROYO MATAMOROS', N'aarroyo60050@ufide.ac.cr', N'60050***', 1, 2)
 GO
-INSERT [dbo].[tUsuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado], [IdRol]) VALUES (3, N'119620522', N'SEBASTIAN LOPEZ PADILLA', N'slopez20522@ufide.ac.cr', N'20522**', 1, 1)
+INSERT [dbo].[tUsuario] ([IdUsuario], [Identificacion], [NombreCompleto], [CorreoElectronico], [Contrasenna], [Estado], [IdRol]) VALUES (3, N'119620522', N'SEBASTIAN LOPEZ PADILLA', N'slopez20522@ufide.ac.cr', N'20522***', 1, 1)
 GO
 SET IDENTITY_INSERT [dbo].[tUsuario] OFF
 GO
@@ -132,10 +178,55 @@ ALTER TABLE [dbo].[tUsuario] ADD  CONSTRAINT [UK_Identificacion] UNIQUE NONCLUST
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 
+ALTER TABLE [dbo].[tCarrito]  WITH CHECK ADD  CONSTRAINT [FK_tCarrito_tLibro] FOREIGN KEY([IdLibro])
+REFERENCES [dbo].[tLibro] ([IdLibro])
+GO
+ALTER TABLE [dbo].[tCarrito] CHECK CONSTRAINT [FK_tCarrito_tLibro]
+GO
+
+ALTER TABLE [dbo].[tCarrito]  WITH CHECK ADD  CONSTRAINT [FK_tCarrito_tUsuario] FOREIGN KEY([IdUsuario])
+REFERENCES [dbo].[tUsuario] ([IdUsuario])
+GO
+ALTER TABLE [dbo].[tCarrito] CHECK CONSTRAINT [FK_tCarrito_tUsuario]
+GO
+
+ALTER TABLE [dbo].[tPago]  WITH CHECK ADD  CONSTRAINT [FK_tPago_tPago] FOREIGN KEY([IdUsuario])
+REFERENCES [dbo].[tUsuario] ([IdUsuario])
+GO
+ALTER TABLE [dbo].[tPago] CHECK CONSTRAINT [FK_tPago_tPago]
+GO
+
 ALTER TABLE [dbo].[tUsuario]  WITH CHECK ADD  CONSTRAINT [FK_tUsuario_tRol] FOREIGN KEY([IdRol])
 REFERENCES [dbo].[tRol] ([IdRol])
 GO
 ALTER TABLE [dbo].[tUsuario] CHECK CONSTRAINT [FK_tUsuario_tRol]
+GO
+
+CREATE PROCEDURE [dbo].[ProcesarPago]
+	@IdUsuario int
+AS
+BEGIN
+	
+	--generar el pago
+    INSERT INTO tPago (FechaPago,IdUsuario,CantidadPagada,TotalPagado)
+    SELECT	GETDATE(),C.IdUsuario,SUM(C.CantidadCarrito),SUM(C.CantidadCarrito * L.Precio)
+	FROM	tCarrito C
+	INNER	JOIN tLibro L ON C.IdLibro = L.IdLibro
+	WHERE	C.IdUsuario = @IdUsuario
+	GROUP BY C.IdUsuario
+
+	--descontar el inventario
+	UPDATE	L
+	SET		L.Inventario = L.Inventario - C.CantidadCarrito
+	FROM	tLibro L
+	INNER	JOIN tCarrito C ON C.IdLibro = L.IdLibro
+	WHERE	C.IdUsuario = @IdUsuario
+
+	--limpiar el carrito
+	DELETE FROM tCarrito
+	WHERE IdUsuario = @IdUsuario
+
+END
 GO
 
 CREATE PROCEDURE [dbo].[sp_IniciarSesionUsuario]

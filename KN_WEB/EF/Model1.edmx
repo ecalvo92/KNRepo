@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="IdCarrito" />
           </Key>
-          <Property Name="IdCarrito" Type="int" Nullable="false" />
+          <Property Name="IdCarrito" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdLibro" Type="int" Nullable="false" />
           <Property Name="IdUsuario" Type="int" Nullable="false" />
           <Property Name="FechaCarrito" Type="datetime" Nullable="false" />
@@ -38,6 +38,16 @@
           <Property Name="Precio" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="Estado" Type="bit" Nullable="false" />
           <Property Name="Inventario" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tPago">
+          <Key>
+            <PropertyRef Name="IdPago" />
+          </Key>
+          <Property Name="IdPago" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FechaPago" Type="datetime" Nullable="false" />
+          <Property Name="IdUsuario" Type="int" Nullable="false" />
+          <Property Name="CantidadPagada" Type="int" Nullable="false" />
+          <Property Name="TotalPagado" Type="decimal" Precision="18" Scale="2" Nullable="false" />
         </EntityType>
         <EntityType Name="tRol">
           <Key>
@@ -82,6 +92,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_tPago_tPago">
+          <End Role="tUsuario" Type="Self.tUsuario" Multiplicity="1" />
+          <End Role="tPago" Type="Self.tPago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tUsuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="tPago">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_tUsuario_tRol">
           <End Role="tRol" Type="Self.tRol" Multiplicity="1" />
           <End Role="tUsuario" Type="Self.tUsuario" Multiplicity="*" />
@@ -94,6 +116,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="ProcesarPago" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IdUsuario" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_IniciarSesionUsuario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CorreoElectronico" Type="nvarchar" Mode="In" />
           <Parameter Name="Contrasenna" Type="nvarchar" Mode="In" />
@@ -114,6 +139,7 @@
           <EntitySet Name="tCarrito" EntityType="Self.tCarrito" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tError" EntityType="Self.tError" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tLibro" EntityType="Self.tLibro" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tPago" EntityType="Self.tPago" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tRol" EntityType="Self.tRol" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tUsuario" EntityType="Self.tUsuario" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_tCarrito_tLibro" Association="Self.FK_tCarrito_tLibro">
@@ -123,6 +149,10 @@
           <AssociationSet Name="FK_tCarrito_tUsuario" Association="Self.FK_tCarrito_tUsuario">
             <End Role="tUsuario" EntitySet="tUsuario" />
             <End Role="tCarrito" EntitySet="tCarrito" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tPago_tPago" Association="Self.FK_tPago_tPago">
+            <End Role="tUsuario" EntitySet="tUsuario" />
+            <End Role="tPago" EntitySet="tPago" />
           </AssociationSet>
           <AssociationSet Name="FK_tUsuario_tRol" Association="Self.FK_tUsuario_tRol">
             <End Role="tRol" EntitySet="tRol" />
@@ -179,6 +209,7 @@
           <Property Name="IdRol" Type="Int32" Nullable="false" />
           <NavigationProperty Name="tRol" Relationship="Self.FK_tUsuario_tRol" FromRole="tUsuario" ToRole="tRol" />
           <NavigationProperty Name="tCarrito" Relationship="KN_BDModel.FK_tCarrito_tUsuario" FromRole="tUsuario" ToRole="tCarrito" />
+          <NavigationProperty Name="tPago" Relationship="KN_BDModel.FK_tPago_tPago" FromRole="tUsuario" ToRole="tPago" />
         </EntityType>
         <Association Name="FK_tUsuario_tRol">
           <End Role="tRol" Type="Self.tRol" Multiplicity="1" />
@@ -226,6 +257,14 @@
             <End Role="tUsuario" EntitySet="tUsuario" />
             <End Role="tCarrito" EntitySet="tCarrito" />
           </AssociationSet>
+          <EntitySet Name="tPago" EntityType="KN_BDModel.tPago" />
+          <AssociationSet Name="FK_tPago_tPago" Association="KN_BDModel.FK_tPago_tPago">
+            <End Role="tUsuario" EntitySet="tUsuario" />
+            <End Role="tPago" EntitySet="tPago" />
+          </AssociationSet>
+          <FunctionImport Name="ProcesarPago">
+          <Parameter Name="IdUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="sp_IniciarSesionUsuario_Result">
           <Property Type="Int32" Name="IdUsuario" Nullable="false" />
@@ -269,6 +308,29 @@
               <PropertyRef Name="IdUsuario" />
             </Principal>
             <Dependent Role="tCarrito">
+              <PropertyRef Name="IdUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="tPago">
+          <Key>
+            <PropertyRef Name="IdPago" />
+          </Key>
+          <Property Name="IdPago" Type="Int32" Nullable="false" />
+          <Property Name="FechaPago" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdUsuario" Type="Int32" Nullable="false" />
+          <Property Name="CantidadPagada" Type="Int32" Nullable="false" />
+          <Property Name="TotalPagado" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <NavigationProperty Name="tUsuario" Relationship="KN_BDModel.FK_tPago_tPago" FromRole="tPago" ToRole="tUsuario" />
+        </EntityType>
+        <Association Name="FK_tPago_tPago">
+          <End Type="KN_BDModel.tUsuario" Role="tUsuario" Multiplicity="1" />
+          <End Type="KN_BDModel.tPago" Role="tPago" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tUsuario">
+              <PropertyRef Name="IdUsuario" />
+            </Principal>
+            <Dependent Role="tPago">
               <PropertyRef Name="IdUsuario" />
             </Dependent>
           </ReferentialConstraint>
@@ -353,6 +415,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tPago">
+            <EntityTypeMapping TypeName="KN_BDModel.tPago">
+              <MappingFragment StoreEntitySet="tPago">
+                <ScalarProperty Name="TotalPagado" ColumnName="TotalPagado" />
+                <ScalarProperty Name="CantidadPagada" ColumnName="CantidadPagada" />
+                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
+                <ScalarProperty Name="FechaPago" ColumnName="FechaPago" />
+                <ScalarProperty Name="IdPago" ColumnName="IdPago" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ProcesarPago" FunctionName="KN_BDModel.Store.ProcesarPago" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

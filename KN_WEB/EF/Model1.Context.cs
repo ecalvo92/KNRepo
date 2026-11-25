@@ -32,6 +32,7 @@ namespace KN_WEB.EF
         public virtual DbSet<tRol> tRol { get; set; }
         public virtual DbSet<tUsuario> tUsuario { get; set; }
         public virtual DbSet<tCarrito> tCarrito { get; set; }
+        public virtual DbSet<tPago> tPago { get; set; }
     
         public virtual ObjectResult<sp_IniciarSesionUsuario_Result> sp_IniciarSesionUsuario(string correoElectronico, string contrasenna)
         {
@@ -86,6 +87,15 @@ namespace KN_WEB.EF
                 new ObjectParameter("Contrasenna", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_RegistrarUsuario", identificacionParameter, nombreCompletoParameter, correoElectronicoParameter, contrasennaParameter);
+        }
+    
+        public virtual int ProcesarPago(Nullable<int> idUsuario)
+        {
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("IdUsuario", idUsuario) :
+                new ObjectParameter("IdUsuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ProcesarPago", idUsuarioParameter);
         }
     }
 }
