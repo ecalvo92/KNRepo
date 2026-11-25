@@ -14,6 +14,12 @@ namespace KN_WEB.EF
     
     public partial class tLibro
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public tLibro()
+        {
+            this.tCarrito = new HashSet<tCarrito>();
+        }
+    
         public int IdLibro { get; set; }
         public string Titulo { get; set; }
         public string Autor { get; set; }
@@ -23,5 +29,8 @@ namespace KN_WEB.EF
         public decimal Precio { get; set; }
         public bool Estado { get; set; }
         public int Inventario { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tCarrito> tCarrito { get; set; }
     }
 }
